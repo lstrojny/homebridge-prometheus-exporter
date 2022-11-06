@@ -1,16 +1,50 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
-  "pluginType": "platform",
-  "singular": true,
-  "schema": {
-    "type": "object",
-    "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
-      }
+    "pluginAlias": "PrometheusExporter",
+    "pluginType": "platform",
+    "singular": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "pin": {
+                "title": "Pin",
+                "description": "Homebridge PIN for service authentication",
+                "type": "string",
+                "required": true
+            },
+            "debug": {
+                "title": "Debug",
+                "type": "boolean",
+                "required": false,
+                "default": false
+            },
+            "probe_port": {
+                "title": "Probe server port",
+                "description": "TCP port for the prometheus probe server to listen to",
+                "type": "integer",
+                "required": false,
+                "default": 36123
+            },
+            "refresh_interval": {
+                "title": "Service refresh interval",
+                "description": "Discover new services every <interval> seconds",
+                "type": "integer",
+                "required": false,
+                "default": 60
+            },
+            "request_timeout": {
+                "title": "Request timeout",
+                "description": "Request timeout when interacting with homebridge instances",
+                "type": "integer",
+                "required": false,
+                "default": 10
+            },
+            "discovery_timeout": {
+                "title": "Service discovery timeout",
+                "description": "Discovery timeout after which the current discovery is considered failed",
+                "type": "integer",
+                "required": false,
+                "default": 20
+            }
+        }
     }
-  }
 }

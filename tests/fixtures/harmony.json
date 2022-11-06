@@ -1,0 +1,410 @@
+{
+    "ipAddress": "192.168.0.1",
+    "instance": {
+        "host": "192.168.0.1",
+        "port": 38333,
+        "url": "http://192.168.0.1:38333",
+        "deviceID": "AA:AA:AA:AA:AA:AA",
+        "txt": {
+            "c#": "2",
+            "ff": "0",
+            "id": "AA:AA:AA:AA:AA:AA",
+            "md": "Fernbedienung Wohnzimmer",
+            "pv": "1.1",
+            "s#": "1",
+            "sf": "0",
+            "ci": "31",
+            "sh": "Aa6YjQ=="
+        },
+        "name": "Harmony bridge"
+    },
+    "accessories": {
+        "accessories": [
+            {
+                "aid": 1,
+                "services": [
+                    {
+                        "type": "0000003E-0000-1000-8000-0026BB765291",
+                        "iid": 1,
+                        "characteristics": [
+                            {
+                                "type": "00000014-0000-1000-8000-0026BB765291",
+                                "iid": 2,
+                                "perms": ["pw"],
+                                "description": "Identify",
+                                "format": "bool"
+                            },
+                            {
+                                "type": "00000020-0000-1000-8000-0026BB765291",
+                                "iid": 3,
+                                "value": "Logitech",
+                                "perms": ["pr"],
+                                "description": "Manufacturer",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "00000021-0000-1000-8000-0026BB765291",
+                                "iid": 4,
+                                "value": "Fernbedienung Wohnzimmer",
+                                "perms": ["pr"],
+                                "description": "Model",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "00000023-0000-1000-8000-0026BB765291",
+                                "iid": 5,
+                                "value": "Fernbedienung Wohnzimmer-TV 970C",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "00000030-0000-1000-8000-0026BB765291",
+                                "iid": 6,
+                                "value": "0e88f449-2720-4000-8c4b-06775986e8ac",
+                                "perms": ["pr"],
+                                "description": "Serial Number",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "00000052-0000-1000-8000-0026BB765291",
+                                "iid": 7,
+                                "value": "1.6.2",
+                                "perms": ["pr"],
+                                "description": "Firmware Revision",
+                                "format": "string"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "000000D8-0000-1000-8000-0026BB765291",
+                        "iid": 8,
+                        "characteristics": [
+                            {
+                                "type": "000000E1-0000-1000-8000-0026BB765291",
+                                "iid": 13,
+                                "perms": ["pw"],
+                                "description": "Remote Key",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 16,
+                                "minStep": 1,
+                                "valid-values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                            },
+                            {
+                                "type": "000000DF-0000-1000-8000-0026BB765291",
+                                "iid": 15,
+                                "perms": ["pw"],
+                                "description": "Power Mode Selection",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "00000023-0000-1000-8000-0026BB765291",
+                                "iid": 9,
+                                "value": "Fernbedienung Wohnzimmer",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "000000E3-0000-1000-8000-0026BB765291",
+                                "iid": 12,
+                                "value": "Fernbedienung",
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Configured Name",
+                                "format": "string"
+                            },
+                            {
+                                "type": "000000E8-0000-1000-8000-0026BB765291",
+                                "iid": 14,
+                                "value": 1,
+                                "perms": ["ev", "pr"],
+                                "description": "Sleep Discovery Mode",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "000000B0-0000-1000-8000-0026BB765291",
+                                "iid": 10,
+                                "value": 0,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Active",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "000000E7-0000-1000-8000-0026BB765291",
+                                "iid": 11,
+                                "value": 0,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Active Identifier",
+                                "format": "uint32"
+                            }
+                        ],
+                        "linked": [16, 24, 32]
+                    },
+                    {
+                        "type": "000000D9-0000-1000-8000-0026BB765291",
+                        "iid": 16,
+                        "characteristics": [
+                            {
+                                "type": "00000023-0000-1000-8000-0026BB765291",
+                                "iid": 17,
+                                "value": "CD",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "000000E3-0000-1000-8000-0026BB765291",
+                                "iid": 18,
+                                "value": "CD",
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Configured Name",
+                                "format": "string"
+                            },
+                            {
+                                "type": "000000DB-0000-1000-8000-0026BB765291",
+                                "iid": 19,
+                                "value": 10,
+                                "perms": ["ev", "pr"],
+                                "description": "Input Source Type",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 10,
+                                "minStep": 1,
+                                "valid-values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                            },
+                            {
+                                "type": "000000D6-0000-1000-8000-0026BB765291",
+                                "iid": 20,
+                                "value": 1,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Is Configured",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "000000E6-0000-1000-8000-0026BB765291",
+                                "iid": 22,
+                                "value": 1,
+                                "perms": ["pr"],
+                                "description": "Identifier",
+                                "format": "uint32"
+                            },
+                            {
+                                "type": "00000135-0000-1000-8000-0026BB765291",
+                                "iid": 21,
+                                "value": 0,
+                                "perms": ["ev", "pr"],
+                                "description": "Current Visibility State",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "00000134-0000-1000-8000-0026BB765291",
+                                "iid": 23,
+                                "value": 0,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Target Visibility State",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "000000D9-0000-1000-8000-0026BB765291",
+                        "iid": 24,
+                        "characteristics": [
+                            {
+                                "type": "00000023-0000-1000-8000-0026BB765291",
+                                "iid": 25,
+                                "value": "AirPlay",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "000000E3-0000-1000-8000-0026BB765291",
+                                "iid": 26,
+                                "value": "AirPlay",
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Configured Name",
+                                "format": "string"
+                            },
+                            {
+                                "type": "000000DB-0000-1000-8000-0026BB765291",
+                                "iid": 27,
+                                "value": 10,
+                                "perms": ["ev", "pr"],
+                                "description": "Input Source Type",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 10,
+                                "minStep": 1,
+                                "valid-values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                            },
+                            {
+                                "type": "000000D6-0000-1000-8000-0026BB765291",
+                                "iid": 28,
+                                "value": 1,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Is Configured",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "000000E6-0000-1000-8000-0026BB765291",
+                                "iid": 30,
+                                "value": 2,
+                                "perms": ["pr"],
+                                "description": "Identifier",
+                                "format": "uint32"
+                            },
+                            {
+                                "type": "00000135-0000-1000-8000-0026BB765291",
+                                "iid": 29,
+                                "value": 0,
+                                "perms": ["ev", "pr"],
+                                "description": "Current Visibility State",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "00000134-0000-1000-8000-0026BB765291",
+                                "iid": 31,
+                                "value": 0,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Target Visibility State",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "00000113-0000-1000-8000-0026BB765291",
+                        "iid": 32,
+                        "characteristics": [
+                            {
+                                "type": "000000EA-0000-1000-8000-0026BB765291",
+                                "iid": 37,
+                                "perms": ["pw"],
+                                "description": "Volume Selector",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "00000023-0000-1000-8000-0026BB765291",
+                                "iid": 33,
+                                "value": "Fernbedienung Wohnzimmer",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "000000B0-0000-1000-8000-0026BB765291",
+                                "iid": 35,
+                                "value": 1,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Active",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "minStep": 1,
+                                "valid-values": [0, 1]
+                            },
+                            {
+                                "type": "000000E9-0000-1000-8000-0026BB765291",
+                                "iid": 36,
+                                "value": 3,
+                                "perms": ["ev", "pr"],
+                                "description": "Volume Control Type",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 3,
+                                "minStep": 1,
+                                "valid-values": [0, 1, 2, 3]
+                            },
+                            {
+                                "type": "0000011A-0000-1000-8000-0026BB765291",
+                                "iid": 34,
+                                "value": 0,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Mute",
+                                "format": "bool"
+                            },
+                            {
+                                "type": "00000119-0000-1000-8000-0026BB765291",
+                                "iid": 38,
+                                "value": 50,
+                                "perms": ["ev", "pr", "pw"],
+                                "description": "Volume",
+                                "format": "uint8",
+                                "unit": "percentage",
+                                "minValue": 0,
+                                "maxValue": 100,
+                                "minStep": 1
+                            }
+                        ]
+                    },
+                    {
+                        "type": "000000A2-0000-1000-8000-0026BB765291",
+                        "iid": 39,
+                        "characteristics": [
+                            {
+                                "type": "00000037-0000-1000-8000-0026BB765291",
+                                "iid": 40,
+                                "value": "1.1.0",
+                                "perms": ["pr"],
+                                "description": "Version",
+                                "format": "string",
+                                "maxLen": 64
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "deviceID": "AA:AA:AA:AA:AA:AA",
+    "name": "Fernbedienung Wohnzimmer"
+}

@@ -1,0 +1,25 @@
+{
+    "accessories": [],
+    "bridge": {
+        "name": "Prometheus Exporter Test Homebridge",
+        "pin": "121-11-121"
+    },
+    "platforms": [
+        {
+            "pin": "808-00-808",
+            "platform": "PrometheusExporter",
+            "debug": true
+        },
+        {
+            "platform": "cmdSwitch2",
+            "switches": [
+                {
+                    "name": "Test",
+                    "on_cmd": "echo on",
+                    "off_cmd": "echo off",
+                    "state_cmd": "test $(echo \"`date +\"%s\"` % 4\" | bc) -eq 0"
+                }
+            ]
+        }
+    ]
+}

@@ -1,41 +1,52 @@
 {
-  "private": true,
-  "displayName": "Plugin Name",
-  "name": "homebridge-plugin-name",
-  "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
-  },
-  "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
-  },
-  "engines": {
-    "node": ">=14.18.1",
-    "homebridge": ">=1.3.5"
-  },
-  "main": "dist/index.js",
-  "scripts": {
-    "lint": "eslint src/**.ts --max-warnings=0",
-    "watch": "npm run build && npm link && nodemon",
-    "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run lint && npm run build"
-  },
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "dependencies": {},
-  "devDependencies": {
-    "@types/node": "^16.10.9",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.0.1",
-    "homebridge": "^1.3.5",
-    "nodemon": "^2.0.13",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.3.0",
-    "typescript": "^4.4.4"
-  }
+    "private": true,
+    "name": "homebridge-prometheus-exporter",
+    "version": "1.0.0",
+    "description": "Prometheus exporter for homebridge accessories.",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lstrojny/homebridge-prometheus-exporter.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lstrojny/homebridge-prometheus-exporter/issues"
+    },
+    "engines": {
+        "node": ">=14.18.1",
+        "homebridge": ">=1.3.5"
+    },
+    "main": "dist/index.js",
+    "scripts": {
+        "lint": "npm run format && eslint --ignore-path=.gitignore '**/**.{ts,js,json}'",
+        "watch": "npm run build && npm run link && nodemon",
+        "watch-tests": "jest --watch",
+        "tests": "jest",
+        "link": "npm install --no-save file:///$PWD/",
+        "build": "rimraf ./dist && tsc",
+        "format": "prettier --ignore-path=.gitignore --write '**/**.{ts,js,json}'",
+        "prepublishOnly": "npm run lint && npm run build"
+    },
+    "keywords": [
+        "homebridge-plugin"
+    ],
+    "devDependencies": {
+        "@types/node": "^16.10.9",
+        "@typescript-eslint/eslint-plugin": "^5.42.0",
+        "@typescript-eslint/parser": "^5.42.0",
+        "eslint": "^8.0.1",
+        "eslint-plugin-prettier": "^4.2.1",
+        "homebridge": "^1.3.5",
+        "homebridge-cmdswitch2": "^0.2.10",
+        "nodemon": "^2.0.13",
+        "prettier": "^2.7.1",
+        "rimraf": "^3.0.2",
+        "ts-jest": "^29.0.3",
+        "ts-node": "^10.3.0",
+        "typescript": "^4.4.4"
+    },
+    "dependencies": {
+        "fastify": "^4.9.2",
+        "hap-node-client": "git+https://github.com/NorthernMan54/Hap-Node-Client.git#fe200ba",
+        "runtypes": "^6.6.0"
+    }
 }
