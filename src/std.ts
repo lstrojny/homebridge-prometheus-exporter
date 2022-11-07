@@ -1,5 +1,5 @@
 type Types = 'string' | 'number' | 'boolean' | 'object'
-type TypeMap = {
+interface TypeMap {
     string: string
     number: number
     boolean: boolean

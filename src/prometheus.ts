@@ -1,4 +1,7 @@
 import { Metric } from './metrics'
+import { Logger } from 'homebridge'
+import { HttpResponse } from './adapters/http/api'
+import { HttpServer } from './http'
 
 function escapeString(str: string) {
     return str.replace(/\\/g, '\\\\').replace(/\n/g, '\\n')
@@ -66,5 +69,57 @@ export class MetricsRenderer {
         name = name.replace(/^(.*_)?(total)_(.*)$/, '$1$3_$2')
 
         return sanitizePrometheusMetricName(this.prefix.replace(/_+$/, '') + '_' + name)
+    }
+}
+
+const contentTypeHeader = { 'Content-Type': 'text/plain; charset=UTF-8' }
+
+export class PrometheusServer implements HttpServer {
+    private metricsInitialized = false
+    private metrics: Metric[] = []
+
+    constructor(public readonly port: number, public readonly log: Logger, public readonly debug: boolean) {}
+
+    onRequest(): HttpResponse | undefined {
+        if (!this.metricsInitialized) {
+            return {
+                statusCode: 503,
+                headers: { ...contentTypeHeader, 'Retry-After': '10' },
+                body: 'Metrics discovery pending',
+            }
+        }
+    }
+
+    onMetrics(): HttpResponse {
+        const renderer = new MetricsRenderer('homebridge')
+        const metrics = this.metrics.map((metric) => renderer.render(metric)).join('\n')
+
+        return {
+            statusCode: 200,
+            headers: contentTypeHeader,
+            body: metrics,
+        }
+    }
+
+    onNotFound(): HttpResponse {
+        return {
+            statusCode: 404,
+            headers: contentTypeHeader,
+            body: 'Not found. Try /metrics',
+        }
+    }
+
+    onError(error: unknown): HttpResponse {
+        this.log.error('HTTP request error: %o', error)
+        return {
+            statusCode: 500,
+            headers: contentTypeHeader,
+            body: 'Server error',
+        }
+    }
+
+    updateMetrics(metrics: Metric[]): void {
+        this.metrics = metrics
+        this.metricsInitialized = true
     }
 }

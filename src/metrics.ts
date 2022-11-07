@@ -1,4 +1,4 @@
-import type { Device, Accessory, NumberTypes, Service } from './boundaries'
+import type { Accessory, Device, Service } from './boundaries'
 import { isType } from './std'
 import { NUMBER_TYPES } from './boundaries'
 

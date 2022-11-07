@@ -1,4 +1,4 @@
-import { Number, String, Literal, Array, Record, Union, Static, Optional, Intersect } from 'runtypes'
+import { Array, Intersect, Literal, Number, Optional, Record, Static, String, Union } from 'runtypes'
 
 export const NUMBER_TYPES = ['float', 'int', 'uint8', 'uint16', 'uint32', 'uint64'] as const
 const NumberTypesLiterals = NUMBER_TYPES.map(Literal)

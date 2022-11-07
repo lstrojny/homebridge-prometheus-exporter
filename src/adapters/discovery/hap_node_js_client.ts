@@ -1,13 +1,13 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
 
-import { Device, DeviceBoundary } from '../boundaries'
+import { Device, DeviceBoundary } from '../../boundaries'
 import { Array, Unknown } from 'runtypes'
 import { Logger } from 'homebridge'
 
 const MaybeDevices = Array(Unknown)
 
-type HapConfig = {
+interface HapConfig {
     debug: boolean
     refresh: number
     timeout: number

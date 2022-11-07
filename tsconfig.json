@@ -14,5 +14,5 @@
         "resolveJsonModule": true
     },
     "include": ["src/"],
-    "exclude": ["**/*.test.ts", "node_modules/hap-nodejs/**/**"]
+    "exclude": []
 }

@@ -1,15 +1,14 @@
-import { API, Logger, PlatformConfig, IndependentPlatformPlugin } from 'homebridge'
+import { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
 
-import { Metric, aggregate } from './metrics'
-import { discover } from './discovery/hap_node_js_client'
-import { serve } from './http/fastify'
-import { HttpServerController } from './http/api'
-import { MetricsRenderer } from './prometheus'
+import { aggregate } from './metrics'
+import { discover } from './adapters/discovery/hap_node_js_client'
+import { serve } from './adapters/http/fastify'
+import { HttpServerController } from './adapters/http/api'
+import { PrometheusServer } from './prometheus'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
-    private metrics: Metric[] = []
-    private metricsDiscovered = false
-    private http: HttpServerController | undefined = undefined
+    private readonly httpServer: PrometheusServer
+    private httpServerController: HttpServerController | undefined = undefined
 
     constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
         this.log.debug('Initializing platform %s', this.config.platform)
@@ -18,12 +17,22 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.api.on('shutdown', () => {
             this.log.debug('Shutting down %s', this.config.platform)
-            if (this.http) {
-                this.http.shutdown()
+            if (this.httpServerController) {
+                this.httpServerController.shutdown()
             }
         })
 
-        this.startHttpServer()
+        this.log.debug('Starting probe HTTP server on port %d', this.config.probe_port)
+
+        this.httpServer = new PrometheusServer(this.config.probe_port, this.log, this.config.debug)
+        serve(this.httpServer)
+            .then((httpServerController) => {
+                this.log.debug('HTTP server started on port %d', this.config.probe_port)
+                this.httpServerController = httpServerController
+            })
+            .catch((e) => {
+                this.log.error('Failed to start probe HTTP server on port %d: %o', this.config.probe_port, e)
+            })
 
         this.api.on('didFinishLaunching', () => {
             this.log.debug('Finished launching %s', this.config.platform)
@@ -45,55 +54,6 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
         this.log.debug('Configuration materialized: %o', this.config)
     }
 
-    private startHttpServer(): void {
-        this.log.debug('Starting probe HTTP server on port %d', this.config.probe_port)
-
-        const contentTypeHeader = { 'Content-Type': 'text/plain; charset=UTF-8' }
-        serve({
-            port: this.config.probe_port,
-            logger: this.log,
-            requestInterceptor: () => {
-                if (!this.metricsDiscovered) {
-                    return {
-                        statusCode: 503,
-                        headers: { ...contentTypeHeader, 'Retry-After': '10' },
-                        body: 'Discovery pending',
-                    }
-                }
-            },
-            metricsController: () => {
-                const renderer = new MetricsRenderer('homebridge')
-                const metrics = this.metrics.map((metric) => renderer.render(metric)).join('\n')
-
-                return {
-                    statusCode: 200,
-                    headers: contentTypeHeader,
-                    body: metrics,
-                }
-            },
-            notFoundController: () => ({
-                statusCode: 404,
-                headers: contentTypeHeader,
-                body: 'Not found. Try /metrics',
-            }),
-            errorController: (e) => {
-                this.log.error('HTTP request error: %o', e)
-                return {
-                    statusCode: 500,
-                    headers: contentTypeHeader,
-                    body: 'Server error',
-                }
-            },
-        })
-            .then((http) => {
-                this.log.debug('HTTP server started on port %d', this.config.probe_port)
-                this.http = http
-            })
-            .catch((e) => {
-                this.log.error('Failed to start probe HTTP server on port %d: %o', this.config.probe_port, e)
-            })
-    }
-
     private startHapDiscovery(): void {
         this.log.debug('Starting HAP discovery')
         discover({
@@ -105,9 +65,9 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
             debug: this.config.debug,
         })
             .then((devices) => {
-                this.metrics = aggregate(devices, new Date())
-                this.metricsDiscovered = true
-                this.log.debug('HAP discovery completed, %d metrics discovered', this.metrics.length)
+                const metrics = aggregate(devices, new Date())
+                this.httpServer.updateMetrics(metrics)
+                this.log.debug('HAP discovery completed, %d metrics discovered', metrics.length)
                 this.startHapDiscovery()
             })
             .catch((e) => {

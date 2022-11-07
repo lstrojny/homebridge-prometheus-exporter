@@ -1,9 +1,9 @@
-import type { Device } from '../boundaries'
+import type { Device } from '../../boundaries'
 import { Logger } from 'homebridge'
 
 type Pin = string
 
-export type HapConfig = {
+export interface HapConfig {
     pin: Pin
     refreshInterval: number
     discoveryTimeout: number
