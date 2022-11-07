@@ -7,7 +7,12 @@ module.exports = {
         'prettier/prettier': 'warn',
         '@typescript-eslint/explicit-module-boundary-types': 'error',
         'prefer-arrow-callback': 'error',
-        'sort-imports': 'warn',
+        'sort-imports': [
+            'error',
+            {
+                ignoreDeclarationSort: true,
+            },
+        ],
     },
     overrides: [
         {

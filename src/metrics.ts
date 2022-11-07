@@ -18,28 +18,6 @@ export class Metric {
  */
 const METRICS_FILTER = ['Identifier']
 
-function debug(devices: Device[]): void {
-    const debugInfo = []
-
-    for (const device of devices) {
-        for (const accessory of device.accessories.accessories) {
-            for (const service of accessory.services) {
-                const info = []
-                for (const characteristic of service.characteristics) {
-                    info.push(
-                        [characteristic.description, 'value' in characteristic ? characteristic.value : '<none>'].join(
-                            ': ',
-                        ),
-                    )
-                }
-                debugInfo.push(['Service ' + Services[service.type as keyof typeof Services], info])
-            }
-        }
-    }
-
-    console.log(JSON.stringify(debugInfo, null, 4))
-}
-
 export function aggregate(devices: Device[], timestamp: Date): Metric[] {
     const metrics: Metric[] = []
 

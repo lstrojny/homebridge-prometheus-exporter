@@ -1,6 +1,5 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
-
 import { Device, DeviceBoundary } from '../../boundaries'
 import { Array, Unknown } from 'runtypes'
 import { Logger } from 'homebridge'
