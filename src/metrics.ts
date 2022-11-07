@@ -1,8 +1,7 @@
 import type { Accessory, Device, Service } from './boundaries'
 import { isType } from './std'
 import { NUMBER_TYPES } from './boundaries'
-
-import { Services } from './hap'
+import { Service as HapService } from 'hap-nodejs'
 
 export class Metric {
     constructor(
@@ -36,7 +35,7 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                                 continue
                             }
                             const name = formatName(
-                                Services[service.type as keyof typeof Services],
+                                uuidToServerName(service.type),
                                 characteristic.description,
                                 characteristic.unit,
                             )
@@ -112,4 +111,16 @@ function getServiceLabels(service: Service): Record<string, string> {
     }
 
     return labels
+}
+
+function uuidToServerName(uuid: string): string {
+    for (const name of Object.getOwnPropertyNames(HapService)) {
+        const maybeService = (HapService as unknown as Record<string, unknown>)[name]
+        if (typeof maybeService === 'function' && 'UUID' in maybeService) {
+            if ((maybeService as Record<string,string>)['UUID'] === uuid) {
+                return name
+            }
+        }
+    }
+    throw new Error(`Could not resolve UUID ${uuid} to service`)
 }
