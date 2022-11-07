@@ -4,6 +4,7 @@ import { Metric, aggregate } from './metrics'
 import { discover } from './discovery/hap_node_js_client'
 import { serve } from './http/fastify'
 import { HttpServerController } from './http/api'
+import { MetricsRenderer } from './prometheus'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private metrics: Metric[] = []
@@ -61,16 +62,8 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
                 }
             },
             probeController: () => {
-                const prefix = 'homebridge_'
-                const metrics = this.metrics
-                    .map((metric) => [
-                        `# TYPE ${prefix}${metric.name} gauge`,
-                        `${prefix}${metric.name}{${Object.entries(metric.labels)
-                            .map(([key, value]) => `${key}="${value}"`)
-                            .join(',')}} ${metric.value}`,
-                    ])
-                    .flat()
-                    .join('\n')
+                const renderer = new MetricsRenderer('homebridge')
+                const metrics = this.metrics.map(renderer.render).join('\n')
 
                 return {
                     statusCode: 200,
@@ -109,7 +102,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
             debug: this.config.debug,
         })
             .then((devices) => {
-                this.metrics = aggregate(devices)
+                this.metrics = aggregate(devices, new Date())
                 this.metricsDiscovered = true
                 this.log.debug('HAP discovery completed, %d metrics discovered', this.metrics.length)
                 this.startHapDiscovery()

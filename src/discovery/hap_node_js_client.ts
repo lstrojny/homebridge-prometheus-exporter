@@ -1,9 +1,9 @@
-import type {HapDiscover} from './api'
-import {HAPNodeJSClient} from 'hap-node-client'
+import type { HapDiscover } from './api'
+import { HAPNodeJSClient } from 'hap-node-client'
 
-import {Device, DeviceBoundary} from '../boundaries'
-import {Array, Unknown} from 'runtypes'
-import {Logger} from "homebridge";
+import { Device, DeviceBoundary } from '../boundaries'
+import { Array, Unknown } from 'runtypes'
+import { Logger } from 'homebridge'
 
 const MaybeDevices = Array(Unknown)
 
@@ -18,8 +18,8 @@ type HapClient = typeof HAPNodeJSClient
 type ResolveFunc = (devices: Device[]) => void
 type RejectFunc = (error: unknown) => void
 
-const clientMap: Record<string,HapClient> = {}
-const promiseMap: Record<string,[ResolveFunc,RejectFunc]> = {}
+const clientMap: Record<string, HapClient> = {}
+const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
 function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc, reject: RejectFunc) {
     const key = JSON.stringify(config)
@@ -35,11 +35,7 @@ function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc,
                     try {
                         devices.push(DeviceBoundary.check(device))
                     } catch (e) {
-                        logger.error(
-                            'Boundary check for device data failed %o %s',
-                            e,
-                            JSON.stringify(device, null, 4),
-                        )
+                        logger.error('Boundary check for device data failed %o %s', e, JSON.stringify(device, null, 4))
                     }
                 }
 
@@ -55,7 +51,7 @@ function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc,
     promiseMap[key] = [resolve, reject]
 }
 
-export const discover: HapDiscover = ({pin, refreshInterval, discoveryTimeout, requestTimeout, logger, debug}) => {
+export const discover: HapDiscover = ({ pin, refreshInterval, discoveryTimeout, requestTimeout, logger, debug }) => {
     return new Promise((resolve, reject) => {
         startDiscovery(
             logger,
@@ -67,7 +63,7 @@ export const discover: HapDiscover = ({pin, refreshInterval, discoveryTimeout, r
                 pin,
             },
             resolve,
-            reject
+            reject,
         )
     })
 }

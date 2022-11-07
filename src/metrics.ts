@@ -8,8 +8,8 @@ export class Metric {
     constructor(
         public readonly name: string,
         public readonly value: number,
-        public readonly type: NumberTypes,
-        public readonly labels: Record<string, string>,
+        public readonly timestamp: Date | null = null,
+        public readonly labels: Record<string, string> = {},
     ) {}
 }
 
@@ -40,7 +40,7 @@ function debug(devices: Device[]): void {
     console.log(JSON.stringify(debugInfo, null, 4))
 }
 
-export function aggregate(devices: Device[]): Metric[] {
+export function aggregate(devices: Device[], timestamp: Date): Metric[] {
     const metrics: Metric[] = []
 
     for (const device of devices) {
@@ -63,7 +63,7 @@ export function aggregate(devices: Device[]): Metric[] {
                                 characteristic.unit,
                             )
                             if (!METRICS_FILTER.includes(name)) {
-                                metrics.push(new Metric(name, characteristic.value, characteristic.format, labels))
+                                metrics.push(new Metric(name, characteristic.value, timestamp, labels))
                             }
                         }
                     }
