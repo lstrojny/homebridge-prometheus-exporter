@@ -1,2 +1,3 @@
 - Extract PrometheusFormatter
 - Extract HttpServer
+- Include discovery timestamp in metric

@@ -96,7 +96,6 @@ function camelCaseToSnakeCase(str: string): string {
 function getDeviceLabels(device: Device): Record<string, string> {
     return {
         bridge: device.instance.name,
-        instance: device.instance.url,
         device_id: device.instance.deviceID,
     }
 }

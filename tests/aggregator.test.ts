@@ -13,7 +13,6 @@ describe('Metrics aggregator', () => {
         const expectedLabels = {
             bridge: 'Dyson bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             firmware_revision: '21.04.03',
             hardware_revision: 'TP02',
             manufacturer: 'Dyson',
@@ -48,7 +47,6 @@ describe('Metrics aggregator', () => {
         const expectedLabelsAccessory1 = {
             bridge: 'TP-Link bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             firmware_revision: '1.5.6 Build 191125 Rel.083657',
             hardware_revision: '2.0',
             manufacturer: 'TP-Link',
@@ -60,7 +58,6 @@ describe('Metrics aggregator', () => {
         const expectedLabelsAccessory2 = {
             bridge: 'TP-Link bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             firmware_revision: '1.5.6 Build 191125 Rel.083657',
             hardware_revision: '2.0',
             manufacturer: 'TP-Link',
@@ -89,7 +86,6 @@ describe('Metrics aggregator', () => {
         const expectedLabels1 = {
             bridge: 'Harmony bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             configured_name: 'Fernbedienung',
             firmware_revision: '1.6.2',
             manufacturer: 'Logitech',
@@ -101,7 +97,6 @@ describe('Metrics aggregator', () => {
         const expectedLabels2 = {
             bridge: 'Harmony bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             configured_name: 'CD',
             firmware_revision: '1.6.2',
             manufacturer: 'Logitech',
@@ -113,7 +108,6 @@ describe('Metrics aggregator', () => {
         const expectedLabels3 = {
             bridge: 'Harmony bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             configured_name: 'AirPlay',
             firmware_revision: '1.6.2',
             manufacturer: 'Logitech',
@@ -125,7 +119,6 @@ describe('Metrics aggregator', () => {
         const expectedLabels4 = {
             bridge: 'Harmony bridge',
             device_id: 'AA:AA:AA:AA:AA:AA',
-            instance: 'http://192.168.0.1:38333',
             firmware_revision: '1.6.2',
             manufacturer: 'Logitech',
             model: 'Fernbedienung Wohnzimmer',
