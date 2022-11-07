@@ -61,9 +61,9 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
                     }
                 }
             },
-            probeController: () => {
+            metricsController: () => {
                 const renderer = new MetricsRenderer('homebridge')
-                const metrics = this.metrics.map(renderer.render).join('\n')
+                const metrics = this.metrics.map((metric) => renderer.render(metric)).join('\n')
 
                 return {
                     statusCode: 200,
@@ -74,13 +74,16 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
             notFoundController: () => ({
                 statusCode: 404,
                 headers: contentTypeHeader,
-                body: 'Not found. Try /probe',
+                body: 'Not found. Try /metrics',
             }),
-            errorController: () => ({
-                statusCode: 500,
-                headers: contentTypeHeader,
-                body: 'Server error',
-            }),
+            errorController: (e) => {
+                this.log.error('HTTP request error: %o', e)
+                return {
+                    statusCode: 500,
+                    headers: contentTypeHeader,
+                    body: 'Server error',
+                }
+            },
         })
             .then((http) => {
                 this.log.debug('HTTP server started on port %d', this.config.probe_port)

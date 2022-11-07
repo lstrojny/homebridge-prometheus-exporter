@@ -9,9 +9,9 @@ export type HttpResponse = {
 export type HttpServerConfig = {
     port: number
     requestInterceptor: () => HttpResponse | undefined
-    probeController: () => HttpResponse
+    metricsController: () => HttpResponse
     notFoundController: () => HttpResponse
-    errorController: () => HttpResponse
+    errorController: (error: unknown) => HttpResponse
     logger: Logger
 }
 

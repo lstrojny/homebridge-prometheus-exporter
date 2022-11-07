@@ -42,7 +42,7 @@ function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void
 export const serve: HttpServer = async ({
     port,
     requestInterceptor,
-    probeController,
+    metricsController,
     notFoundController,
     errorController,
 }) => {
@@ -61,15 +61,15 @@ export const serve: HttpServer = async ({
     })
 
     fastify.setErrorHandler(async (error, request: FastifyRequest, reply: FastifyReply) => {
-        adaptResponseToReply(errorController(), reply)
+        adaptResponseToReply(errorController(error), reply)
     })
 
     fastify.setNotFoundHandler(async (request: FastifyRequest, reply: FastifyReply) => {
         adaptResponseToReply(notFoundController(), reply)
     })
 
-    fastify.get('/probe', async (request: FastifyRequest, reply: FastifyReply) => {
-        adaptResponseToReply(probeController(), reply)
+    fastify.get('/metrics', async (request: FastifyRequest, reply: FastifyReply) => {
+        adaptResponseToReply(metricsController(), reply)
     })
 
     await fastify.listen({ port, host: '::' })
