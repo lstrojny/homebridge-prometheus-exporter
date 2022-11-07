@@ -50,7 +50,7 @@ export class MetricsRenderer {
     render(metric: Metric): string {
         const name = this.metricName(metric.name)
         return [
-            `# TYPE ${name} ${name.endsWith('_total') ? 'count' : 'gauge'}`,
+            `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
             `${name}${this.renderLabels(metric.labels)} ${metric.value}${
                 metric.timestamp !== null ? ' ' + String(metric.timestamp.getTime()) : ''
             }`,

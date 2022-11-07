@@ -37,7 +37,7 @@ prefix_metric{label="Some Label"} 0.000001 946684800000`,
                     new Metric(metricName, 42, new Date('2000-01-01 00:00:00 UTC'), { label: 'Some Label' }),
                 ),
             ).toEqual(
-                `# TYPE prefix_some_metric_total count
+                `# TYPE prefix_some_metric_total counter
 prefix_some_metric_total{label="Some Label"} 42 946684800000`,
             )
         }
