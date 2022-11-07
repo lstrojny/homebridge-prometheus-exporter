@@ -72,7 +72,7 @@ export const serve: HttpServer = async ({
         adaptResponseToReply(probeController(), reply)
     })
 
-    await fastify.listen({ port })
+    await fastify.listen({ port, host: '::' })
 
     return {
         shutdown() {
