@@ -1,5 +1,6 @@
 import type { Accessory, Device, Service } from './boundaries/hap'
 import { assertTypeExhausted, isType } from './std'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Service as HapService } from 'hap-nodejs'
 
 export class Metric {
