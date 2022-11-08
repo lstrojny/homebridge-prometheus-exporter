@@ -123,5 +123,5 @@ dist
 # IntelliJ
 /.idea/
 
-/dot-homebridge/accessories/
-/dot-homebridge/persist/
+/.homebridge/accessories/
+/.homebridge/persist/

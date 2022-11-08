@@ -6,7 +6,7 @@
     },
     "platforms": [
         {
-            "pin": "808-00-808",
+            "pin": "121-11-121",
             "platform": "PrometheusExporter",
             "debug": true
         },

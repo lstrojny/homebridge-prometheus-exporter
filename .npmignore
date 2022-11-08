@@ -134,7 +134,7 @@ web_modules/
 .pnp.*
 
 # Dev setup
-dot-homebridge/
+.homebridge/
 tests/
 .idea/
 flake.*
