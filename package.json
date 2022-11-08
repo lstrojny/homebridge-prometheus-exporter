@@ -1,5 +1,4 @@
 {
-    "private": true,
     "name": "homebridge-prometheus-exporter",
     "version": "0.0.1",
     "description": "Prometheus exporter for homebridge accessories.",
