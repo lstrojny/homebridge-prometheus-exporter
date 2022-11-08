@@ -1,7 +1,6 @@
 {
-    "watch": ["src"],
-    "ext": "ts",
-    "ignore": [],
+    "watch": ["./"],
+    "ignore": ["dist/*", "tests/*"],
     "exec": "tsc && homebridge -D -U dot-homebridge",
     "signal": "SIGTERM",
     "env": {

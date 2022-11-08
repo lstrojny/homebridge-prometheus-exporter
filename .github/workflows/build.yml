@@ -11,10 +11,14 @@ jobs:
       matrix:
         # the Node.js versions to build on
         node-version: [14.x, 16.x, 17.x, 18.x]
-        fail-on-lint: [true]
+        allow-lint-failure: [false]
+        allow-test-failure: [false]
         include:
-          - { node-version: 13.x, fail-on-lint: false }
-          - { node-version: 15.x, fail-on-lint: false }
+          - { node-version: 10.x, allow-lint-failure: true, allow-test-failure: true }
+          - { node-version: 11.x, allow-lint-failure: true, allow-test-failure: true }
+          - { node-version: 12.x, allow-lint-failure: true, allow-test-failure: true }
+          - { node-version: 13.x, allow-lint-failure: true, allow-test-failure: true }
+          - { node-version: 15.x, allow-lint-failure: true, allow-test-failure: false }
 
     steps:
       - uses: actions/checkout@v3
@@ -29,9 +33,11 @@ jobs:
 
       - name: Lint the project
         run: npm run lint
-        continue-on-error: ${{ ! matrix.fail-on-lint }}
+        continue-on-error: ${{ matrix.allow-lint-failure }}
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: ${{ matrix.allow-test-failure }}
 
       - name: Build the project
         run: npm run build
-        env:
-          CI: true
