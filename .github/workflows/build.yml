@@ -10,7 +10,11 @@ jobs:
       fail-fast: false
       matrix:
         # the Node.js versions to build on
-        node-version: [13.x, 14.x, 15.x, 16.x, 17.x, 18.x]
+        node-version: [14.x, 16.x, 17.x, 18.x]
+        fail-on-lint: [true]
+        include:
+          - { node-version: 13.x, fail-on-lint: false }
+          - { node-version: 15.x, fail-on-lint: false }
 
     steps:
       - uses: actions/checkout@v3
@@ -25,6 +29,7 @@ jobs:
 
       - name: Lint the project
         run: npm run lint
+        continue-on-error: ${{ ! matrix.fail-on-lint }}
 
       - name: Build the project
         run: npm run build
