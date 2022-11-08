@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import { DeviceBoundary } from '../src/boundaries'
+import { DeviceBoundary } from '../src/boundaries/hap'
 import { Metric, aggregate } from '../src/metrics'
 import dysonData from './fixtures/dyson.json'
 import emptyData from './fixtures/empty.json'
@@ -10,7 +10,7 @@ describe('Metrics aggregator', () => {
     const timestamp = new Date('2000-01-01 00:00:00 UTC')
 
     test('Aggregates homebridge-dyson fan metrics', () => {
-        const dyson = DeviceBoundary.check(dysonData)
+        const dyson = DeviceBoundary.parse(dysonData)
 
         const expectedLabels = {
             bridge: 'Dyson bridge',
@@ -38,13 +38,13 @@ describe('Metrics aggregator', () => {
     })
 
     test('Aggregates empty accessory metrics to empty metrics', () => {
-        const empty = DeviceBoundary.check(emptyData)
+        const empty = DeviceBoundary.parse(emptyData)
 
         expect(aggregate([empty], timestamp)).toEqual([])
     })
 
     test('Aggregates TP-Link plugs metrics', () => {
-        const tpLink = DeviceBoundary.check(tpLinkData)
+        const tpLink = DeviceBoundary.parse(tpLinkData)
 
         const expectedLabelsAccessory1 = {
             bridge: 'TP-Link bridge',
@@ -88,7 +88,7 @@ describe('Metrics aggregator', () => {
     })
 
     test('Aggregates homebridge-harmony remote metrics', () => {
-        const harmony = DeviceBoundary.check(harmonyData)
+        const harmony = DeviceBoundary.parse(harmonyData)
 
         const expectedLabels1 = {
             bridge: 'Harmony bridge',

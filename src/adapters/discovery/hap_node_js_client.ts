@@ -1,10 +1,10 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
-import { Device, DeviceBoundary } from '../../boundaries'
-import { Array, Unknown } from 'runtypes'
+import { Device, DeviceBoundary } from '../../boundaries/hap'
 import { Logger } from 'homebridge'
+import z from 'zod'
 
-const MaybeDevices = Array(Unknown)
+const MaybeDevices = z.array(z.unknown())
 
 interface HapConfig {
     debug: boolean
@@ -13,11 +13,10 @@ interface HapConfig {
     reqTimeout: number
     pin: string
 }
-type HapClient = typeof HAPNodeJSClient
 type ResolveFunc = (devices: Device[]) => void
 type RejectFunc = (error: unknown) => void
 
-const clientMap: Record<string, HapClient> = {}
+const clientMap: Record<string, HAPNodeJSClient> = {}
 const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
 function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc, reject: RejectFunc) {
@@ -30,9 +29,9 @@ function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc,
             try {
                 const devices: Device[] = []
 
-                for (const device of MaybeDevices.check(deviceData)) {
+                for (const device of MaybeDevices.parse(deviceData)) {
                     try {
-                        devices.push(DeviceBoundary.check(device))
+                        devices.push(DeviceBoundary.parse(device))
                     } catch (e) {
                         logger.error('Boundary check for device data failed %o %s', e, JSON.stringify(device, null, 4))
                     }

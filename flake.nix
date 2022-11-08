@@ -16,6 +16,6 @@
 
       in with pkgs; rec {
 
-        devShell = pkgs.mkShell rec { buildInputs = with pkgs; [ nodejs ]; };
+        devShell = pkgs.mkShell rec { buildInputs = with pkgs; [ nodejs jq ]; };
       });
 }

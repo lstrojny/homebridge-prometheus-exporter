@@ -4,11 +4,13 @@
     "singular": true,
     "schema": {
         "type": "object",
+        "required": ["pin"],
         "properties": {
             "pin": {
                 "title": "Pin",
                 "description": "Homebridge PIN for service authentication",
                 "type": "string",
+                "pattern": "^\\d{3}-\\d{2}-\\d{3}$",
                 "required": true
             },
             "debug": {

@@ -7,12 +7,12 @@
         "declarationMap": true,
         "sourceMap": true,
         "outDir": "./dist",
-        "rootDir": "./src",
+        "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
         "noImplicitAny": true,
         "resolveJsonModule": true
     },
-    "include": ["src/"],
+    "include": ["src/", "tests/"],
     "exclude": []
 }

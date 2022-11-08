@@ -5,18 +5,22 @@ import { discover } from './adapters/discovery/hap_node_js_client'
 import { serve } from './adapters/http/fastify'
 import { HttpServerController } from './adapters/http/api'
 import { PrometheusServer } from './prometheus'
+import { Config, ConfigBoundary } from './boundaries'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer
     private httpServerController: HttpServerController | undefined = undefined
+    private readonly config: Config
 
-    constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
-        this.log.debug('Initializing platform %s', this.config.platform)
+    constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
+        this.log.debug('Initializing platform %s', config.platform)
 
-        this.configure()
+        this.config = ConfigBoundary.parse(config)
+
+        this.log.debug('Configuration parsed', this.config)
 
         this.api.on('shutdown', () => {
-            this.log.debug('Shutting down %s', this.config.platform)
+            this.log.debug('Shutting down %s', config.platform)
             if (this.httpServerController) {
                 this.httpServerController.shutdown()
             }
@@ -38,21 +42,6 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
             this.log.debug('Finished launching %s', this.config.platform)
             this.startHapDiscovery()
         })
-    }
-
-    private configure(): void {
-        if (this.config.pin !== 'string' || !this.config.pin.match(/^\d{3}-\d{2}-\d{3}$/)) {
-            this.log.error('"pin" must be defined in config and match format 000-00-000')
-        }
-
-        this.config.debug = this.config.debug ?? false
-        this.config.port = this.config.port ?? 36123
-        this.config.prefix = this.config.prefix ?? 'homebridge'
-        this.config.refresh_interval = this.config.refresh_interval || 60
-        this.config.request_timeout = this.config.request_timeout || 10
-        this.config.discovery_timeout = this.config.discovery_timeout || 20
-
-        this.log.debug('Configuration materialized: %o', this.config)
     }
 
     private startHapDiscovery(): void {

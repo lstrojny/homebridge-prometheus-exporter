@@ -1,4 +1,4 @@
-import type { Accessory, Device, Service } from './boundaries'
+import type { Accessory, Device, Service } from './boundaries/hap'
 import { assertTypeExhausted, isType } from './std'
 import { Service as HapService } from 'hap-nodejs'
 

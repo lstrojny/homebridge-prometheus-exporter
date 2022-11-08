@@ -1,11 +1,10 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+    extends: ['eslint:recommended'],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint', 'prettier'],
     root: true,
     rules: {
         'prettier/prettier': 'warn',
-        '@typescript-eslint/explicit-module-boundary-types': 'error',
         'prefer-arrow-callback': 'error',
         'sort-imports': [
             'error',
@@ -15,6 +14,19 @@ module.exports = {
         ],
     },
     overrides: [
+        {
+            files: ['**/*.ts'],
+            extends: [
+                'plugin:@typescript-eslint/recommended',
+                'plugin:@typescript-eslint/recommended-requiring-type-checking',
+            ],
+            parserOptions: {
+                project: ['./tsconfig.json'],
+            },
+            rules: {
+                '@typescript-eslint/explicit-module-boundary-types': 'error',
+            },
+        },
         {
             files: ['.eslintrc.js', 'jest.config.js', 'prettier.config.js'],
             env: {
