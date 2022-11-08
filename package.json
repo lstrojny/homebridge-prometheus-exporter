@@ -30,10 +30,13 @@
         "homebridge-plugin"
     ],
     "devDependencies": {
+        "@jest/globals": "^29.3.0",
         "@types/node": "^16.10.9",
         "@typescript-eslint/eslint-plugin": "^5.42.0",
         "@typescript-eslint/parser": "^5.42.0",
         "eslint": "^8.0.1",
+        "eslint-import-resolver-typescript": "^3.5.2",
+        "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-prettier": "^4.2.1",
         "homebridge": "^1.3.5",
         "homebridge-cmdswitch2": "^0.2.10",
@@ -47,6 +50,7 @@
     "dependencies": {
         "fastify": "^4.9.2",
         "hap-node-client": "git+https://github.com/NorthernMan54/Hap-Node-Client.git#fe200ba",
+        "hap-nodejs": "^0.10.4",
         "json-schema-to-zod": "^0.2.0",
         "zod": "^3.19.1"
     },

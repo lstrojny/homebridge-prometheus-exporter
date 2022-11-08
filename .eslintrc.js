@@ -1,7 +1,7 @@
 module.exports = {
-    extends: ['eslint:recommended'],
+    extends: ['eslint:recommended', 'plugin:import/recommended'],
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'prettier'],
+    plugins: ['@typescript-eslint', 'prettier', 'import'],
     root: true,
     rules: {
         'prettier/prettier': 'warn',
@@ -12,6 +12,13 @@ module.exports = {
                 ignoreDeclarationSort: true,
             },
         ],
+        'import/no-unresolved': 'error',
+        'import/no-extraneous-dependencies': 'error',
+        'import/first': 'error',
+        'import/no-duplicates': 'error',
+        'import/no-default-export': 'error',
+        'import/no-namespace': 'error',
+        'import/no-useless-path-segments': 'error',
     },
     overrides: [
         {
@@ -19,12 +26,20 @@ module.exports = {
             extends: [
                 'plugin:@typescript-eslint/recommended',
                 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+                'plugin:import/typescript',
             ],
             parserOptions: {
                 project: ['./tsconfig.json'],
             },
             rules: {
                 '@typescript-eslint/explicit-module-boundary-types': 'error',
+            },
+            settings: {
+                'import/resolver': {
+                    typescript: {
+                        project: './',
+                    },
+                },
             },
         },
         {
