@@ -17,7 +17,7 @@
                 "required": false,
                 "default": false
             },
-            "probe_port": {
+            "port": {
                 "title": "Probe server port",
                 "description": "TCP port for the prometheus probe server to listen to",
                 "type": "integer",

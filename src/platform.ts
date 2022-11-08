@@ -22,16 +22,16 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
             }
         })
 
-        this.log.debug('Starting probe HTTP server on port %d', this.config.probe_port)
+        this.log.debug('Starting probe HTTP server on port %d', this.config.port)
 
-        this.httpServer = new PrometheusServer(this.config.probe_port, this.log, this.config.debug)
+        this.httpServer = new PrometheusServer(this.config.port, this.log, this.config.debug)
         serve(this.httpServer)
             .then((httpServerController) => {
-                this.log.debug('HTTP server started on port %d', this.config.probe_port)
+                this.log.debug('HTTP server started on port %d', this.config.port)
                 this.httpServerController = httpServerController
             })
             .catch((e) => {
-                this.log.error('Failed to start probe HTTP server on port %d: %o', this.config.probe_port, e)
+                this.log.error('Failed to start probe HTTP server on port %d: %o', this.config.port, e)
             })
 
         this.api.on('didFinishLaunching', () => {
@@ -46,7 +46,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
         }
 
         this.config.debug = this.config.debug ?? false
-        this.config.probe_port = this.config.probe_port ?? 36123
+        this.config.port = this.config.port ?? 36123
         this.config.refresh_interval = this.config.refresh_interval || 60
         this.config.request_timeout = this.config.request_timeout || 10
         this.config.discovery_timeout = this.config.discovery_timeout || 20
