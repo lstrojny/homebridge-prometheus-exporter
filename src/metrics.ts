@@ -1,6 +1,5 @@
 import type { Accessory, Device, Service } from './boundaries'
-import { isType } from './std'
-import { NUMBER_TYPES } from './boundaries'
+import { assertTypeExhausted, isType } from './std'
 import { Service as HapService } from 'hap-nodejs'
 
 export class Metric {
@@ -29,20 +28,33 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                     ...getServiceLabels(service),
                 }
                 for (const characteristic of service.characteristics) {
-                    for (const numberType of NUMBER_TYPES) {
-                        if (characteristic.format === numberType && typeof characteristic.value !== 'undefined') {
-                            if (METRICS_FILTER.includes(characteristic.description)) {
-                                continue
-                            }
-                            const name = formatName(
-                                uuidToServerName(service.type),
-                                characteristic.description,
-                                characteristic.unit,
-                            )
-                            if (!METRICS_FILTER.includes(name)) {
+                    const format = characteristic.format
+                    switch (format) {
+                        case 'string':
+                            break
+
+                        case 'bool':
+                        case 'float':
+                        case 'int':
+                        case 'uint8':
+                        case 'uint16':
+                        case 'uint32':
+                        case 'uint64':
+                            if (typeof characteristic.value !== 'undefined') {
+                                if (METRICS_FILTER.includes(characteristic.description)) {
+                                    break
+                                }
+                                const name = formatName(
+                                    uuidToServerName(service.type),
+                                    characteristic.description,
+                                    characteristic.unit,
+                                )
                                 metrics.push(new Metric(name, characteristic.value, timestamp, labels))
                             }
-                        }
+                            break
+
+                        default:
+                            assertTypeExhausted(format)
                     }
                 }
             }
@@ -117,7 +129,7 @@ function uuidToServerName(uuid: string): string {
     for (const name of Object.getOwnPropertyNames(HapService)) {
         const maybeService = (HapService as unknown as Record<string, unknown>)[name]
         if (typeof maybeService === 'function' && 'UUID' in maybeService) {
-            if ((maybeService as Record<string,string>)['UUID'] === uuid) {
+            if ((maybeService as Record<string, string>)['UUID'] === uuid) {
                 return name
             }
         }

@@ -1,20 +1,27 @@
 import { Array, Intersect, Literal, Number, Optional, Record, Static, String, Union } from 'runtypes'
 
-export const NUMBER_TYPES = ['float', 'int', 'uint8', 'uint16', 'uint32', 'uint64'] as const
-const NumberTypesLiterals = NUMBER_TYPES.map(Literal)
-const NumberTypesBoundary = Union(NumberTypesLiterals[0], ...NumberTypesLiterals)
-export type NumberTypes = Static<typeof NumberTypesBoundary>
+export const NUMBER_TYPES = [] as const
+
+const NumberAlikeTypesTypesBoundary = Union(
+    Literal('bool'),
+    Literal('float'),
+    Literal('int'),
+    Literal('uint8'),
+    Literal('uint16'),
+    Literal('uint32'),
+    Literal('uint64'),
+)
+export type NumberAlikeTypes = Static<typeof NumberAlikeTypesTypesBoundary>
 
 export const CharacteristicBoundary = Intersect(
     Record({ type: String, description: String }),
     Union(
         Record({
-            format: NumberTypesBoundary,
+            format: NumberAlikeTypesTypesBoundary,
             value: Optional(Number),
             unit: Optional(String),
         }),
         Record({ format: Literal('string'), value: String }),
-        Record({ format: Literal('bool') }),
     ),
 )
 export type Characteristic = Static<typeof CharacteristicBoundary>

@@ -69,11 +69,16 @@ describe('Metrics aggregator', () => {
         }
 
         expect(aggregate([tpLink], timestamp)).toEqual([
+            new Metric('outlet_on', 0, timestamp, expectedLabelsAccessory1),
+            new Metric('outlet_in_use', 0, timestamp, expectedLabelsAccessory1),
             new Metric('outlet_amperes_a', 0.03, timestamp, expectedLabelsAccessory1),
             new Metric('outlet_total_consumption_kwh', 0.051, timestamp, expectedLabelsAccessory1),
             new Metric('outlet_apparent_power_va', 53248.8, timestamp, expectedLabelsAccessory1),
             new Metric('outlet_volts_v', 230.8, timestamp, expectedLabelsAccessory1),
             new Metric('outlet_consumption_w', 0, timestamp, expectedLabelsAccessory1),
+
+            new Metric('outlet_on', 0, timestamp, expectedLabelsAccessory2),
+            new Metric('outlet_in_use', 0, timestamp, expectedLabelsAccessory2),
             new Metric('outlet_amperes_a', 0.03, timestamp, expectedLabelsAccessory2),
             new Metric('outlet_total_consumption_kwh', 13.025, timestamp, expectedLabelsAccessory2),
             new Metric('outlet_apparent_power_va', 53365.6, timestamp, expectedLabelsAccessory2),
@@ -145,6 +150,7 @@ describe('Metrics aggregator', () => {
 
             new Metric('speaker_active', 1, timestamp, expectedLabels4),
             new Metric('speaker_volume_control_type', 3, timestamp, expectedLabels4),
+            new Metric('speaker_mute', 0, timestamp, expectedLabels4),
             new Metric('speaker_volume_percentage', 50, timestamp, expectedLabels4),
         ])
     })
