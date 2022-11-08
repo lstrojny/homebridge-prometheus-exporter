@@ -17,6 +17,12 @@
                 "required": false,
                 "default": false
             },
+            "prefix": {
+                "title": "Metrics prefix",
+                "type": "string",
+                "required": false,
+                "default": "homebridge"
+            },
             "port": {
                 "title": "Probe server port",
                 "description": "TCP port for the prometheus probe server to listen to",

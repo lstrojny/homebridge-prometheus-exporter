@@ -78,7 +78,12 @@ export class PrometheusServer implements HttpServer {
     private metricsInitialized = false
     private metrics: Metric[] = []
 
-    constructor(public readonly port: number, public readonly log: Logger, public readonly debug: boolean) {}
+    constructor(
+        public readonly port: number,
+        public readonly log: Logger,
+        public readonly debug: boolean,
+        private readonly prefix: string,
+    ) {}
 
     onRequest(): HttpResponse | undefined {
         if (!this.metricsInitialized) {
@@ -91,7 +96,7 @@ export class PrometheusServer implements HttpServer {
     }
 
     onMetrics(): HttpResponse {
-        const renderer = new MetricsRenderer('homebridge')
+        const renderer = new MetricsRenderer(this.prefix)
         const metrics = this.metrics.map((metric) => renderer.render(metric)).join('\n')
 
         return {

@@ -24,7 +24,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.log.debug('Starting probe HTTP server on port %d', this.config.port)
 
-        this.httpServer = new PrometheusServer(this.config.port, this.log, this.config.debug)
+        this.httpServer = new PrometheusServer(this.config.port, this.log, this.config.debug, this.config.prefix)
         serve(this.httpServer)
             .then((httpServerController) => {
                 this.log.debug('HTTP server started on port %d', this.config.port)
@@ -47,6 +47,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.config.debug = this.config.debug ?? false
         this.config.port = this.config.port ?? 36123
+        this.config.prefix = this.config.prefix ?? 'homebridge'
         this.config.refresh_interval = this.config.refresh_interval || 60
         this.config.request_timeout = this.config.request_timeout || 10
         this.config.discovery_timeout = this.config.discovery_timeout || 20
