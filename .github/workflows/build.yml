@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         # the Node.js versions to build on
         node-version: [13.x, 14.x, 15.x, 16.x, 17.x, 18.x]
