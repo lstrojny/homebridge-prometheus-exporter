@@ -132,3 +132,13 @@ web_modules/
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
+
+# Dev setup
+dot-homebridge/
+tests/
+.idea/
+flake.*
+prettier.config.js
+.eslintrc.js
+jest.config.js
+nodemon.json
