@@ -5,8 +5,7 @@
 
 </p>
 
-
-# Homebridge Prometheus Exporter
+# Homebridge Prometheus Exporter [![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml)
 
 > What if we could store homebridge metrics in Prometheus
 
