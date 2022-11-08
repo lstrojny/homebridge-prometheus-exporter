@@ -51,7 +51,7 @@
     },
     "dependencies": {
         "fastify": "^4.9.2",
-        "hap-node-client": "git+https://github.com/NorthernMan54/Hap-Node-Client.git#fe200ba",
+        "hap-node-client": "^0.1.25",
         "zod": "^3.19.1"
     },
     "overrides": {
