@@ -6,164 +6,139 @@
 </p>
 
 
-# Homebridge Platform Plugin Template
+# Homebridge Prometheus Exporter
 
-This is a template Homebridge platform plugin and can be used as a base to help you get started developing your own plugin.
+> What if we could store homebridge metrics in Prometheus
 
-This template should be used in conjunction with the [developer documentation](https://developers.homebridge.io/). A full list of all supported service types, and their characteristics is available on this site.
+*homebridge-prometheus-exporter* is a plugin for *homebridge* that provides a metrics endpoint for *Prometheus* to scrape.
+Once the metrics are in *Prometheus*, they can be consumed and presented in various ways. One can use *Prometheus
+Alerting Rules* to trigger actions on certain thresholds or *Grafana* to build informative graphs or alerts.
 
-## Clone As Template
+![A Grafana timeseries showing wattage and voltage of two home appliances on a timeseries chart](https://user-images.githubusercontent.com/79707/200554468-940da6fb-b1c8-4b2e-bd76-f5e208bf72a3.png)
 
-Click the link below to create a new GitHub Repository using this template, or click the *Use This Template* button above.
 
-<span align="center">
+## Installing
 
-### [Create New Repository From Template](https://github.com/homebridge/homebridge-plugin-template/generate)
+### Install the plugin
 
-</span>
+Run this command to install the plugin as a global *nodejs* module:
 
-## Setup Development Environment
-
-To develop Homebridge plugins you must have Node.js 12 or later installed, and a modern code editor such as [VS Code](https://code.visualstudio.com/). This plugin template uses [TypeScript](https://www.typescriptlang.org/) to make development easier and comes with pre-configured settings for [VS Code](https://code.visualstudio.com/) and ESLint. If you are using VS Code install these extensions:
-
-* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-
-## Install Development Dependencies
-
-Using a terminal, navigate to the project folder and run this command to install the development dependencies:
-
-```
-npm install
+```shell
+npm install -g homebridge-prometheus-exporter
 ```
 
-## Update package.json
+### Configure *homebridge*
 
-Open the [`package.json`](./package.json) and change the following attributes:
-
-* `name` - this should be prefixed with `homebridge-` or `@username/homebridge-` and contain no spaces or special characters apart from a dashes
-* `displayName` - this is the "nice" name displayed in the Homebridge UI
-* `repository.url` - Link to your GitHub repo
-* `bugs.url` - Link to your GitHub repo issues page
-
-When you are ready to publish the plugin you should set `private` to false, or remove the attribute entirely.
-
-## Update Plugin Defaults
-
-Open the [`src/settings.ts`](./src/settings.ts) file and change the default values:
-
-* `PLATFORM_NAME` - Set this to be the name of your platform. This is the name of the platform that users will use to register the plugin in the Homebridge `config.json`.
-* `PLUGIN_NAME` - Set this to be the same name you set in the [`package.json`](./package.json) file. 
-
-Open the [`config.schema.json`](./config.schema.json) file and change the following attribute:
-
-* `pluginAlias` - set this to match the `PLATFORM_NAME` you defined in the previous step.
-
-## Build Plugin
-
-TypeScript needs to be compiled into JavaScript before it can run. The following command will compile the contents of your [`src`](./src) directory and put the resulting code into the `dist` folder.
-
-```
-npm run build
-```
-
-## Link To Homebridge
-
-Run this command so your global install of Homebridge can discover the plugin in your development environment:
-
-```
-npm link
-```
-
-You can now start Homebridge, use the `-D` flag so you can see debug log messages in your plugin:
-
-```
-homebridge -D
-```
-
-## Watch For Changes and Build Automatically
-
-If you want to have your code compile automatically as you make changes, and restart Homebridge automatically between changes, you first need to add your plugin as a platform in `~/.homebridge/config.json`:
-```
+Edit the *homebridge* `config.json` to load the plugin:
+```json lines
 {
-...
+    // …
     "platforms": [
-        {
-            "name": "Config",
-            "port": 8581,
-            "platform": "config"
-        },
-        {
-            "name": "<PLUGIN_NAME>",
-            //... any other options, as listed in config.schema.json ...
-            "platform": "<PLATFORM_NAME>"
-        }
-    ]
+    {
+      "platform": "PrometheusExporter",
+      "pin": "123-12-123",
+    },
+    // …
+  ]
 }
 ```
 
-and then you can run:
+### Customize *homebridge* startup
 
+For *homebridge-prometheus-exporter* to work, *homebridge* has to run in "insecure mode". This means that any user who
+has access to your network can control your *homebridge* devices. This is usually not a big problem but it is still
+something you should consciously decide. *homebridge-config-ui-x*
+[requires running in insecure mode](https://github.com/oznu/homebridge-config-ui-x/wiki/Enabling-Accessory-Control)
+if you want to control your devices from *homebridge-config-ui-x*.
+
+To enable "insecure mode", edit the startup script for *homebridge* and add `--insecure` or `-I`. Assuming you run
+systemd, the proper way to override the config would be to use *systemd’s* drop-in mechanism.
+
+Create `/etc/systemd/system/homebridge.service.d` folder:
+```shell
+mkdir /etc/systemd/system/homebridge.service.d
 ```
-npm run watch
-```
-
-This will launch an instance of Homebridge in debug mode which will restart every time you make a change to the source code. It will load the config stored in the default location under `~/.homebridge`. You may need to stop other running instances of Homebridge while using this command to prevent conflicts. You can adjust the Homebridge startup command in the [`nodemon.json`](./nodemon.json) file.
-
-## Customise Plugin
-
-You can now start customising the plugin template to suit your requirements.
-
-* [`src/platform.ts`](./src/platform.ts) - this is where your device setup and discovery should go.
-* [`src/platformAccessory.ts`](./src/platformAccessory.ts) - this is where your accessory control logic should go, you can rename or create multiple instances of this file for each accessory type you need to implement as part of your platform plugin. You can refer to the [developer documentation](https://developers.homebridge.io/) to see what characteristics you need to implement for each service type.
-* [`config.schema.json`](./config.schema.json) - update the config schema to match the config you expect from the user. See the [Plugin Config Schema Documentation](https://developers.homebridge.io/#/config-schema).
-
-## Versioning Your Plugin
-
-Given a version number `MAJOR`.`MINOR`.`PATCH`, such as `1.4.3`, increment the:
-
-1. **MAJOR** version when you make breaking changes to your plugin,
-2. **MINOR** version when you add functionality in a backwards compatible manner, and
-3. **PATCH** version when you make backwards compatible bug fixes.
-
-You can use the `npm version` command to help you with this:
-
-```bash
-# major update / breaking changes
-npm version major
-
-# minor update / new features
-npm version update
-
-# patch / bugfixes
-npm version patch
+Write this drop-in configuration file to /etc/systemd/system/homebridge.service.d/insecure.conf:
+```ini
+[Service]
+ExecStart=
+ExecStart=/usr/lib/node_modules/homebridge/bin/homebridge --insecure
 ```
 
-## Publish Package
+The first and empty `ExecStart` tells *systemd* to forget about the `ExecStart` from the original service definition
+and the second `ExecStart` declares the new file. Run `systemctl daemon-reload` to refresh *systemd’s* unit database
+and then run `systemd-delta --type=extended` to check if the drop-in worked as expected.
 
-When you are ready to publish your plugin to [npm](https://www.npmjs.com/), make sure you have removed the `private` attribute from the [`package.json`](./package.json) file then run:
+You should see something like this in the output:
 
-```
-npm publish
-```
-
-If you are publishing a scoped plugin, i.e. `@username/homebridge-xxx` you will need to add `--access=public` to command the first time you publish.
-
-#### Publishing Beta Versions
-
-You can publish *beta* versions of your plugin for other users to test before you release it to everyone.
-
-```bash
-# create a new pre-release version (eg. 2.1.0-beta.1)
-npm version prepatch --preid beta
-
-# publish to @beta
-npm publish --tag=beta
+```text
+…
+[EXTENDED]   /lib/systemd/system/homebridge.service → /etc/systemd/system/homebridge.service.d/insecure.conf
+…
 ```
 
-Users can then install the  *beta* version by appending `@beta` to the install command, for example:
+If you are not using *systemd*, first of all, you absolutely should but second of all you will likely have some sort
+of env file, e.g. `/etc/defaults/homebridge` to customize the *homebridge* start command. Restart *homebridge* using
+`systemctl restart homebridge`.
 
+Test that the metrics endpoint is available by accesing `http://homebridge-host:36123/metrics`. You should see a
+response similar to this:
+
+```text
+# TYPE homebridge_air_purifier_active gauge
+homebridge_air_purifier_active{name="…",…} 0 1667914208196
+# TYPE homebridge_air_purifier_current_air_purifier_state gauge
+homebridge_air_purifier_current_air_purifier_state{name="…",…} 0 1667914208196
 ```
-sudo npm install -g homebridge-example-plugin@beta
+
+### Configuring *Prometheus*
+
+With *homebridge-prometheus-exporter* up and running, it is now time to configure *Prometheus* to scrape the config
+endpoint. Go to your prometheus host and edit `/etc/prometheus/prometheus.yml` and add the following scrape config:
+
+```yml
+
+scrape_configs:
+  - job_name: homebridge-exporter
+    static_configs:
+    - targets:
+      - homebridge-host:36123
 ```
 
+Once *Prometheus* is restarted, metrics with the `homebridge_` prefix should start to be ingested.
 
+### Customize *homebridge-prometheus-exporter*
+
+*homebridge-prometheus-exporter* offers a few advanced settings to customize its behavior.
+
+```json lines
+{
+  // …
+  "platforms": [
+    {
+      "platform": "PrometheusExporter",
+      // Homebridge PIN for service authentication. String of digits, format XXX-XX-XXX. Required
+      "pin": string,
+
+      // Toggle debug mode. Run homebridge with -D if you want to see the debug output. Default: false
+      "debug": boolean,
+
+      // Prefix for all metrics. Default: "homebridge"
+      "prefix": string,
+
+      // TCP port where the Prometheus metrics server listens. Default: 36123
+      "port": number,
+
+      // How frequently the services should be rediscovered (in seconds). Default: 60
+      "refresh_interval": number,
+
+      // Timeout for the HTTP request that retrieves the homekit devices (in seconds). Default: 10
+      "request_timeout": number,
+
+      // Timeout for the service discovery (in seconds). Default: 20
+      "discovery_timeout": number,
+    },
+    // …
+  ]
+}
+```
