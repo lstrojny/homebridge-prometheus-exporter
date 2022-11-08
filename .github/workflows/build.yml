@@ -1,4 +1,4 @@
-name: Build and Lint
+name: CI
 
 on: [push, pull_request]
 
