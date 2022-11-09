@@ -32,6 +32,8 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                     const format = characteristic.format
                     switch (format) {
                         case 'string':
+                        case 'tlv8':
+                        case 'data':
                             break
 
                         case 'bool':

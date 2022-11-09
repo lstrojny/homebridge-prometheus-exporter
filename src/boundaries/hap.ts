@@ -1,6 +1,6 @@
 import z from 'zod'
 
-const NumberAlikeTypesTypesBoundary = z.union([
+const NumericTypesBoundary = z.union([
     z.literal('bool'),
     z.literal('float'),
     z.literal('int'),
@@ -9,17 +9,19 @@ const NumberAlikeTypesTypesBoundary = z.union([
     z.literal('uint32'),
     z.literal('uint64'),
 ])
-export type NumberAlikeTypes = z.infer<typeof NumberAlikeTypesTypesBoundary>
+export type NumericTypes = z.infer<typeof NumericTypesBoundary>
 
 export const CharacteristicBoundary = z.intersection(
     z.object({ type: z.string(), description: z.string() }),
     z.union([
         z.object({
-            format: NumberAlikeTypesTypesBoundary,
+            format: NumericTypesBoundary,
             value: z.optional(z.number()),
             unit: z.optional(z.string()),
         }),
         z.object({ format: z.literal('string'), value: z.string() }),
+        z.object({ format: z.literal('data'), value: z.optional(z.string()) }),
+        z.object({ format: z.literal('tlv8'), value: z.string(z.string()) }),
     ]),
 )
 export type Characteristic = z.infer<typeof CharacteristicBoundary>

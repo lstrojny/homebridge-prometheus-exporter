@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import { DeviceBoundary } from '../src/boundaries/hap'
+import { DeviceBoundary } from '../src/boundaries'
 import { Metric, aggregate } from '../src/metrics'
 import dysonData from './fixtures/dyson.json'
 import emptyData from './fixtures/empty.json'
