@@ -21,7 +21,8 @@
         "test": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; `npm bin`/jest `ifNotCi --watchAll`",
         "link": "npm install --no-save file:///$PWD/",
         "build": "rimraf ./dist && tsc",
-        "prepublishOnly": "npm run lint && npm run build"
+        "prepublishOnly": "npm run lint && npm run build",
+        "release": "release() { test \"$1\" && npm version $1 && npm publish && git push origin develop && git push origin --tags; }; release"
     },
     "keywords": [
         "homebridge-plugin",
