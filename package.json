@@ -1,6 +1,6 @@
 {
     "name": "homebridge-prometheus-exporter",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Prometheus exporter for homebridge accessories.",
     "license": "Apache-2.0",
     "repository": {
