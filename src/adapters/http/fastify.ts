@@ -6,18 +6,20 @@ function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void
     if (response.statusCode) {
         void reply.code(response.statusCode)
     }
-    if (response.body) {
-        void reply.send(response.body)
-    }
 
     if (response.headers) {
         void reply.headers(response.headers)
+    }
+
+    if (response.body) {
+        void reply.send(response.body)
     }
 }
 
 export const serve: HttpAdapter = async (server: HttpServer) => {
     const fastify = Fastify({
         logger: server.debug,
+        serverFactory: server.serverFactory,
     })
 
     fastify.addHook('onRequest', (request: FastifyRequest, reply: FastifyReply, next: HookHandlerDoneFunction) => {

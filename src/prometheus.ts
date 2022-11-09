@@ -31,7 +31,14 @@ export class MetricsRenderer {
     }
 }
 
-const contentTypeHeader = { 'Content-Type': 'text/plain; charset=UTF-8' }
+const retryAfterWhileDiscovery = 15
+const textContentType = 'text/plain; charset=utf-8'
+const prometheusSpecVersion = '0.0.4'
+const metricsContentType = `text/plain; version=${prometheusSpecVersion}`
+
+function headers(contentType: string, headers: Record<string, string> = {}): Record<string, string> {
+    return { ...headers, 'Content-Type': contentType }
+}
 
 export class PrometheusServer implements HttpServer {
     private metricsInitialized = false
@@ -39,7 +46,7 @@ export class PrometheusServer implements HttpServer {
 
     constructor(
         public readonly port: number,
-        public readonly log: Logger,
+        public readonly log: Logger | undefined,
         public readonly debug: boolean,
         private readonly prefix: string,
     ) {}
@@ -48,7 +55,7 @@ export class PrometheusServer implements HttpServer {
         if (!this.metricsInitialized) {
             return {
                 statusCode: 503,
-                headers: { ...contentTypeHeader, 'Retry-After': '10' },
+                headers: headers(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
                 body: 'Metrics discovery pending',
             }
         }
@@ -60,7 +67,7 @@ export class PrometheusServer implements HttpServer {
 
         return {
             statusCode: 200,
-            headers: contentTypeHeader,
+            headers: headers(metricsContentType),
             body: metrics,
         }
     }
@@ -68,16 +75,16 @@ export class PrometheusServer implements HttpServer {
     onNotFound(): HttpResponse {
         return {
             statusCode: 404,
-            headers: contentTypeHeader,
+            headers: headers(textContentType),
             body: 'Not found. Try /metrics',
         }
     }
 
     onError(error: unknown): HttpResponse {
-        this.log.error('HTTP request error: %o', error)
+        this.log?.error('HTTP request error: %o', error)
         return {
             statusCode: 500,
-            headers: contentTypeHeader,
+            headers: headers(textContentType),
             body: 'Server error',
         }
     }
