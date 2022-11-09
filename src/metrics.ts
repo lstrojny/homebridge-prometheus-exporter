@@ -137,5 +137,5 @@ function uuidToServerName(uuid: string): string {
             }
         }
     }
-    throw new Error(`Could not resolve UUID ${uuid} to service`)
+    return 'custom'
 }

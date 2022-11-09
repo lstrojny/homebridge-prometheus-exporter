@@ -5,6 +5,7 @@ import dysonData from './fixtures/dyson.json'
 import emptyData from './fixtures/empty.json'
 import tpLinkData from './fixtures/tp-link.json'
 import harmonyData from './fixtures/harmony.json'
+import unknownUuidData from './fixtures/issues/gh-9-unknown-uuid.json'
 
 describe('Metrics aggregator', () => {
     const timestamp = new Date('2000-01-01 00:00:00 UTC')
@@ -152,6 +153,22 @@ describe('Metrics aggregator', () => {
             new Metric('speaker_volume_control_type', 3, timestamp, expectedLabels4),
             new Metric('speaker_mute', 0, timestamp, expectedLabels4),
             new Metric('speaker_volume_percentage', 50, timestamp, expectedLabels4),
+        ])
+    })
+
+    test('Aggregates metrics with unknown service UUID as "custom"', () => {
+        const expectedLabels = {
+            bridge: 'Test bridge',
+            device_id: 'AA:AA:AA:AA:AA:AA',
+            name: 'Phoscon-GW',
+        }
+
+        const unknowmnUuid = DeviceBoundary.parse(unknownUuidData)
+
+        expect(aggregate([unknowmnUuid], timestamp)).toEqual([
+            new Metric('custom_heartrate_seconds', 5, timestamp, expectedLabels),
+            new Metric('custom_transition_time_seconds', 0.4, timestamp, expectedLabels),
+            new Metric('custom_restart', 0, timestamp, expectedLabels),
         ])
     })
 })

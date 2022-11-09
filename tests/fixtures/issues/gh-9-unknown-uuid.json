@@ -1,0 +1,85 @@
+{
+    "ipAddress": "192.168.0.1",
+    "instance": {
+        "host": "192.168.0.1",
+        "port": 51826,
+        "url": "http://192.168.0.1:51826",
+        "deviceID": "AA:AA:AA:AA:AA:AA",
+        "txt": {
+            "c#": "5",
+            "ff": "0",
+            "id": "AA:AA:AA:AA:AA:AA",
+            "md": "homebridge",
+            "pv": "1.1",
+            "s#": "1",
+            "sf": "0",
+            "ci": "2",
+            "sh": "Hv0v9A=="
+        },
+        "name": "Test bridge"
+    },
+    "accessories": {
+        "accessories": [
+            {
+                "aid": 3,
+                "services": [
+                    {
+                        "type": "00000012-0000-1000-8000-656261617577",
+                        "iid": 8,
+                        "characteristics": [
+                            {
+                                "type": "23",
+                                "iid": 9,
+                                "value": "Phoscon-GW",
+                                "perms": ["pr"],
+                                "description": "Name",
+                                "format": "string",
+                                "maxLen": 64
+                            },
+                            {
+                                "type": "00000024-0000-1000-8000-656261617577",
+                                "iid": 10,
+                                "value": 5,
+                                "perms": ["pr", "ev", "pw"],
+                                "description": "Heartrate",
+                                "format": "uint16",
+                                "unit": "seconds",
+                                "minValue": 1,
+                                "maxValue": 30,
+                                "minStep": 1
+                            },
+                            {
+                                "type": "00000023-0000-1000-8000-656261617577",
+                                "iid": 11,
+                                "value": "Thu Mar 04 2021 22:57:10",
+                                "perms": ["pr", "ev"],
+                                "description": "Last Updated",
+                                "format": "string"
+                            },
+                            {
+                                "type": "0000002F-0000-1000-8000-656261617577",
+                                "iid": 12,
+                                "value": 0.4,
+                                "perms": ["pr", "ev", "pw"],
+                                "description": "Transition Time",
+                                "format": "float",
+                                "unit": "seconds",
+                                "minValue": 0,
+                                "maxValue": 3600,
+                                "minStep": 0.1
+                            },
+                            {
+                                "type": "00000058-0000-1000-8000-656261617577",
+                                "iid": 13,
+                                "value": 0,
+                                "perms": ["pr", "ev", "pw"],
+                                "description": "Restart",
+                                "format": "bool"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
