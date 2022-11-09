@@ -1,6 +1,6 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
-import { Device, DeviceBoundary } from '../../boundaries/hap'
+import { Device, DeviceBoundary, checkBoundary } from '../../boundaries'
 import { Logger } from 'homebridge'
 import z from 'zod'
 
@@ -29,9 +29,9 @@ function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc,
             try {
                 const devices: Device[] = []
 
-                for (const device of MaybeDevices.parse(deviceData)) {
+                for (const device of checkBoundary(MaybeDevices, deviceData)) {
                     try {
-                        devices.push(DeviceBoundary.parse(device))
+                        devices.push(checkBoundary(DeviceBoundary, device))
                     } catch (e) {
                         logger.error('Boundary check for device data failed %o %s', e, JSON.stringify(device, null, 4))
                     }

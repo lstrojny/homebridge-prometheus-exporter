@@ -5,7 +5,7 @@ import { discover } from './adapters/discovery/hap_node_js_client'
 import { serve } from './adapters/http/fastify'
 import { HttpServerController } from './adapters/http/api'
 import { PrometheusServer } from './prometheus'
-import { Config, ConfigBoundary } from './boundaries'
+import { Config, ConfigBoundary, checkBoundary } from './boundaries'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer
@@ -15,7 +15,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
         this.log.debug('Initializing platform %s', config.platform)
 
-        this.config = ConfigBoundary.parse(config)
+        this.config = checkBoundary(ConfigBoundary, config)
 
         this.log.debug('Configuration parsed', this.config)
 
