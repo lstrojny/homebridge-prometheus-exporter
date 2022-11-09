@@ -1,9 +1,15 @@
 
-<p align="center">
-
-<img src="https://github.com/homebridge/branding/raw/master/logos/homebridge-wordmark-logo-vertical.png" width="150">
-
-</p>
+<div align="center" style="background:red">
+    <img src="https://github.com/homebridge/branding/raw/master/logos/homebridge-wordmark-logo-vertical.png"
+         alt="Homebridge logo"
+         width="10%"/>
+         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/500px-Plus_symbol.svg.png"
+              alt="Plus sign"
+              width="8%"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Prometheus_software_logo.svg/115px-Prometheus_software_logo.svg.png"
+         alt="Prometheus logo"
+         width="10%"/>
+</div>
 
 # Homebridge Prometheus Exporter [![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml)
 
