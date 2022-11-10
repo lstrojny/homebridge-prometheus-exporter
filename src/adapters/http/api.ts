@@ -1,4 +1,4 @@
-import { HttpServer } from '../../http'
+import type { HttpServer } from '../../http'
 
 export interface HttpResponse {
     statusCode?: number

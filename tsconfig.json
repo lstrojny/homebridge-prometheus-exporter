@@ -10,6 +10,7 @@
         "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
+        "importsNotUsedAsValues": "error",
         "noImplicitAny": true,
         "resolveJsonModule": true
     },

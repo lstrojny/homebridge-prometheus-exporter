@@ -1,6 +1,6 @@
 import Fastify, { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify'
-import { HttpAdapter, HttpResponse } from './api'
-import { HttpServer } from '../../http'
+import type { HttpAdapter, HttpResponse } from './api'
+import type { HttpServer } from '../../http'
 
 function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void {
     if (response.statusCode) {
