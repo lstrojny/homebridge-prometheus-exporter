@@ -1,9 +1,9 @@
-import { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
+import type { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
 
 import { aggregate } from './metrics'
 import { discover } from './adapters/discovery/hap_node_js_client'
 import { serve } from './adapters/http/fastify'
-import { HttpServerController } from './adapters/http/api'
+import type { HttpServerController } from './adapters/http/api'
 import { PrometheusServer } from './prometheus'
 import { Config, ConfigBoundary, checkBoundary } from './boundaries'
 

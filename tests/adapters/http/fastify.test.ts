@@ -3,7 +3,7 @@ import request from 'supertest'
 import { PrometheusServer } from '../../../src/prometheus'
 import { serve } from '../../../src/adapters/http/fastify'
 import { Server, createServer } from 'http'
-import { HttpServer } from '../../../src/http'
+import type { HttpServer } from '../../../src/http'
 import { Metric } from '../../../src/metrics'
 
 class TestablePrometheusServer extends PrometheusServer {

@@ -1,7 +1,7 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
 import { Device, DeviceBoundary, checkBoundary } from '../../boundaries'
-import { Logger } from 'homebridge'
+import type { Logger } from 'homebridge'
 import z from 'zod'
 
 const MaybeDevices = z.array(z.unknown())

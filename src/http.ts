@@ -1,7 +1,7 @@
-import { HttpResponse } from './adapters/http/api'
-import { Metric } from './metrics'
-import { Logger } from 'homebridge'
-import { RequestListener, Server } from 'http'
+import type { HttpResponse } from './adapters/http/api'
+import type { Metric } from './metrics'
+import type { Logger } from 'homebridge'
+import type { RequestListener, Server } from 'http'
 
 export interface HttpServer {
     port: number

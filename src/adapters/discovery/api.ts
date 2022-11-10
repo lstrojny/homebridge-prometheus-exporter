@@ -1,5 +1,5 @@
 import type { Device } from '../../boundaries/hap'
-import { Logger } from 'homebridge'
+import type { Logger } from 'homebridge'
 
 type Pin = string
 

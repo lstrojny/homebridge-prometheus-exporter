@@ -1,7 +1,7 @@
-import { Metric } from './metrics'
-import { Logger } from 'homebridge'
-import { HttpResponse } from './adapters/http/api'
-import { HttpServer } from './http'
+import type { Metric } from './metrics'
+import type { Logger } from 'homebridge'
+import type { HttpResponse } from './adapters/http/api'
+import type { HttpServer } from './http'
 
 export class MetricsRenderer {
     constructor(private readonly prefix: string) {}
