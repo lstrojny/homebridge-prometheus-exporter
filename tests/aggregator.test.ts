@@ -149,10 +149,10 @@ describe('Metrics aggregator', () => {
             new Metric('input_source_current_visibility_state', 0, timestamp, expectedLabels3),
             new Metric('input_source_target_visibility_state', 0, timestamp, expectedLabels3),
 
-            new Metric('speaker_active', 1, timestamp, expectedLabels4),
-            new Metric('speaker_volume_control_type', 3, timestamp, expectedLabels4),
-            new Metric('speaker_mute', 0, timestamp, expectedLabels4),
-            new Metric('speaker_volume_percentage', 50, timestamp, expectedLabels4),
+            new Metric('television_speaker_active', 1, timestamp, expectedLabels4),
+            new Metric('television_speaker_volume_control_type', 3, timestamp, expectedLabels4),
+            new Metric('television_speaker_mute', 0, timestamp, expectedLabels4),
+            new Metric('television_speaker_volume_percentage', 50, timestamp, expectedLabels4),
         ])
     })
 

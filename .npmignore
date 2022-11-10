@@ -142,3 +142,4 @@ prettier.config.js
 .eslintrc.js
 jest.config.js
 nodemon.json
+/code-generation/

@@ -1,7 +1,6 @@
 import type { Accessory, Device, Service } from './boundaries/hap'
+import { Uuids } from './generated/services'
 import { assertTypeExhausted, isType } from './std'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Service as HapService } from 'hap-nodejs'
 
 export class Metric {
     constructor(
@@ -48,7 +47,7 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                                     break
                                 }
                                 const name = formatName(
-                                    uuidToServerName(service.type),
+                                    Uuids[service.type] || 'custom',
                                     characteristic.description,
                                     characteristic.unit,
                                 )
@@ -126,16 +125,4 @@ function getServiceLabels(service: Service): Record<string, string> {
     }
 
     return labels
-}
-
-function uuidToServerName(uuid: string): string {
-    for (const name of Object.getOwnPropertyNames(HapService)) {
-        const maybeService = (HapService as unknown as Record<string, unknown>)[name]
-        if (typeof maybeService === 'function' && 'UUID' in maybeService) {
-            if ((maybeService as Record<string, string>)['UUID'] === uuid) {
-                return name
-            }
-        }
-    }
-    return 'custom'
 }
