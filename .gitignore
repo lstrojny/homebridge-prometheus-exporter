@@ -125,3 +125,5 @@ dist
 
 /.homebridge/accessories/
 /.homebridge/persist/
+
+release.sh
