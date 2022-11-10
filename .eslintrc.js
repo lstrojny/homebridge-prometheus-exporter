@@ -43,7 +43,7 @@ module.exports = {
             },
         },
         {
-            files: ['.eslintrc.js', 'jest.config.js', 'prettier.config.js'],
+            files: ['**/*.js'],
             env: {
                 node: true,
                 browser: false,
