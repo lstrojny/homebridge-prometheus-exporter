@@ -7,6 +7,9 @@ const { join, basename } = require('path')
 
 const uuidToServiceMap = {}
 const serviceToUuidMap = {}
+const file = join(__dirname, '../src/generated/services.ts')
+
+console.log(`Starting code generation for ${file}`)
 
 for (const [name, service] of Object.entries(hap.Service)) {
     if (typeof service !== 'function' || typeof service.UUID !== 'string') {
@@ -28,4 +31,6 @@ export const Services: Record<string,string> = ${JSON.stringify(serviceToUuidMap
     { filepath: 'codegen.ts', ...prettierConfig },
 )
 
-writeFileSync(join(__dirname, '../src/generated/services.ts'), code)
+writeFileSync(file, code)
+
+console.log(`Finished code generation for ${file}`)
