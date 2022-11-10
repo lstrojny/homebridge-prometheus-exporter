@@ -34,7 +34,7 @@ export class MetricsRenderer {
 const retryAfterWhileDiscovery = 15
 const textContentType = 'text/plain; charset=utf-8'
 const prometheusSpecVersion = '0.0.4'
-const metricsContentType = `text/plain; version=${prometheusSpecVersion}`
+const metricsContentType = `${textContentType}; version=${prometheusSpecVersion}`
 
 function headers(contentType: string, headers: Record<string, string> = {}): Record<string, string> {
     return { ...headers, 'Content-Type': contentType }

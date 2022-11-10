@@ -55,7 +55,7 @@ describe('Fastify HTTP adapter', () => {
         return request(testServer.http)
             .get('/metrics')
             .expect(200)
-            .expect('Content-Type', 'text/plain; version=0.0.4')
+            .expect('Content-Type', 'text/plain; charset=utf-8; version=0.0.4')
             .expect(
                 [
                     '# TYPE homebridge_metric gauge',
