@@ -23,7 +23,7 @@
         "build": "rimraf ./dist && npm run code-generation && tsc",
         "code-generation": "./code-generation/hap-gen.js && ./code-generation/config-scheme-gen.js",
         "prepublishOnly": "npm run code-generation && npm run lint && npm run build",
-        "release": "release() { test \"$1\" && test `git rev-parse --abbrev-ref HEAD` == \"develop\" && npm run code-generation && git pull origin develop --rebase && npm version $1 && npm publish && git push origin develop && git push origin --tags; }; release"
+        "release": "release-it --only-version"
     },
     "keywords": [
         "homebridge-plugin",
@@ -48,6 +48,7 @@
         "json-schema-to-zod-with-defaults": "^0.2.1",
         "nodemon": "^2.0.13",
         "prettier": "^2.7.1",
+        "release-it": "^15.5.0",
         "rimraf": "^3.0.2",
         "supertest": "^6.3.1",
         "ts-jest": "^29.0.3",
