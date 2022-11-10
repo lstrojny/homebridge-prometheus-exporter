@@ -3,7 +3,7 @@
         "release": true
     },
     "hooks": {
-        "before:init": ["test `git rev-parse --abbrev-ref HEAD` == 'develop'", "npm run lint", "npm test"],
+        "before:init": ["test `git rev-parse --abbrev-ref HEAD` == 'develop'", "npm run lint", "CI=1 npm test"],
         "after:bump": "npm run build"
     }
 }
