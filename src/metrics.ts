@@ -42,7 +42,7 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                         case 'uint16':
                         case 'uint32':
                         case 'uint64':
-                            if (typeof characteristic.value !== 'undefined') {
+                            if (characteristic.value != null) {
                                 if (METRICS_FILTER.includes(characteristic.description)) {
                                     break
                                 }
@@ -108,6 +108,7 @@ function getServiceLabels(service: Service): Record<string, string> {
 
     for (const characteristic of service.characteristics) {
         if (
+            characteristic.value != null &&
             characteristic.format === 'string' &&
             [
                 'Name',

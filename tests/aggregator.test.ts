@@ -6,6 +6,7 @@ import emptyData from './fixtures/empty.json'
 import tpLinkData from './fixtures/tp-link.json'
 import harmonyData from './fixtures/harmony.json'
 import unknownUuidData from './fixtures/issues/gh-9-unknown-uuid.json'
+import nullableValueData from './fixtures/issues/gh-19-nullable-value.json'
 
 describe('Metrics aggregator', () => {
     const timestamp = new Date('2000-01-01 00:00:00 UTC')
@@ -170,5 +171,11 @@ describe('Metrics aggregator', () => {
             new Metric('custom_transition_time_seconds', 0.4, timestamp, expectedLabels),
             new Metric('custom_restart', 0, timestamp, expectedLabels),
         ])
+    })
+
+    test('Aggregates metrics with nullable values', () => {
+        const unknowmnValue = DeviceBoundary.parse(nullableValueData)
+
+        expect(aggregate([unknowmnValue], timestamp)).toEqual([])
     })
 })

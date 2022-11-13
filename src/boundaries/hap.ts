@@ -1,4 +1,4 @@
-import z from 'zod'
+import z, { type ZodNull, type ZodOptional, type ZodType, type ZodUnion } from 'zod'
 
 const NumericTypesBoundary = z.union([
     z.literal('bool'),
@@ -11,17 +11,21 @@ const NumericTypesBoundary = z.union([
 ])
 export type NumericTypes = z.infer<typeof NumericTypesBoundary>
 
+function optionalNullable<T extends ZodType>(type: T): ZodOptional<ZodUnion<[ZodNull, T]>> {
+    return z.optional(z.union([z.null(), type]))
+}
+
 export const CharacteristicBoundary = z.intersection(
     z.object({ type: z.string(), description: z.string() }),
     z.union([
         z.object({
             format: NumericTypesBoundary,
-            value: z.optional(z.number()),
             unit: z.optional(z.string()),
+            value: optionalNullable(z.number()),
         }),
-        z.object({ format: z.literal('string'), value: z.string() }),
-        z.object({ format: z.literal('data'), value: z.optional(z.string()) }),
-        z.object({ format: z.literal('tlv8'), value: z.string(z.string()) }),
+        z.object({ format: z.literal('string'), value: optionalNullable(z.string()) }),
+        z.object({ format: z.literal('data'), value: optionalNullable(z.string()) }),
+        z.object({ format: z.literal('tlv8'), value: optionalNullable(z.string()) }),
     ]),
 )
 export type Characteristic = z.infer<typeof CharacteristicBoundary>
