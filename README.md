@@ -63,7 +63,7 @@ Create `/etc/systemd/system/homebridge.service.d` folder:
 ```shell
 mkdir /etc/systemd/system/homebridge.service.d
 ```
-Write this drop-in configuration file to /etc/systemd/system/homebridge.service.d/insecure.conf:
+Write this drop-in configuration file to `/etc/systemd/system/homebridge.service.d/insecure.conf`:
 ```ini
 [Service]
 ExecStart=
