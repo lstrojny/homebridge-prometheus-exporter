@@ -1,0 +1,48 @@
+{
+    "ipAddress": "192.168.0.1",
+    "instance": {
+        "host": "192.168.0.1",
+        "port": 51826,
+        "url": "http://192.168.0.1:51826",
+        "deviceID": "AA:AA:AA:AA:AA:AA",
+        "txt": {
+            "c#": "5",
+            "ff": "0",
+            "id": "AA:AA:AA:AA:AA:AA",
+            "md": "homebridge",
+            "pv": "1.1",
+            "s#": "1",
+            "sf": "0",
+            "ci": "2",
+            "sh": "Hv0v9A=="
+        },
+        "name": "Test bridge"
+    },
+    "accessories": {
+        "accessories": [
+            {
+                "aid": 3,
+                "services": [
+                    {
+                        "type": "00000012-0000-1000-8000-656261617577",
+                        "iid": 8,
+                        "characteristics": [
+                            {
+                                "type": "00000073-0000-1000-8000-0026BB765291",
+                                "iid": 11,
+                                "value": null,
+                                "perms": ["ev", "pr"],
+                                "description": "Programmable Switch Event",
+                                "format": "uint8",
+                                "minValue": 0,
+                                "maxValue": 2,
+                                "minStep": 1,
+                                "valid-values": [0]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
