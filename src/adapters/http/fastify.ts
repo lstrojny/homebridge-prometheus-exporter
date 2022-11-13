@@ -16,10 +16,25 @@ function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void
     }
 }
 
+function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string {
+    const remoteAddress = [request.socket.remoteAddress, request.socket.remotePort].filter((v) => v != null).join(':')
+    const userAgent = request.headers['user-agent'] || ''
+    const contentType = request.headers['content-type'] || ''
+    return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
+}
+
 export const serve: HttpAdapter = async (server: HttpServer) => {
     const fastify = Fastify({
-        logger: server.debug,
+        logger: false,
         serverFactory: server.serverFactory,
+    })
+
+    fastify.addHook('onResponse', (request: FastifyRequest, reply: FastifyReply) => {
+        if (reply.statusCode >= 400) {
+            server.log?.warn(formatCombinedLog(request, reply))
+        } else if (server.debug) {
+            server.log?.debug(formatCombinedLog(request, reply))
+        }
     })
 
     fastify.addHook('onRequest', (request: FastifyRequest, reply: FastifyReply, next: HookHandlerDoneFunction) => {
