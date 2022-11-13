@@ -1,6 +1,6 @@
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient } from 'hap-node-client'
-import { Device, DeviceBoundary, checkBoundary } from '../../boundaries'
+import { type Device, DeviceBoundary, checkBoundary } from '../../boundaries'
 import type { Logger } from 'homebridge'
 import z from 'zod'
 

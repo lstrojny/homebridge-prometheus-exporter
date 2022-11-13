@@ -5,7 +5,7 @@ import { discover } from './adapters/discovery/hap_node_js_client'
 import { serve } from './adapters/http/fastify'
 import type { HttpServerController } from './adapters/http/api'
 import { PrometheusServer } from './prometheus'
-import { Config, ConfigBoundary, checkBoundary } from './boundaries'
+import { type Config, ConfigBoundary, checkBoundary } from './boundaries'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer

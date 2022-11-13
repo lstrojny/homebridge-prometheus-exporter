@@ -19,6 +19,7 @@ module.exports = {
         'import/no-default-export': 'error',
         'import/no-namespace': 'error',
         'import/no-useless-path-segments': 'error',
+        'no-duplicate-imports': 'error',
     },
     overrides: [
         {
@@ -33,6 +34,7 @@ module.exports = {
             },
             rules: {
                 '@typescript-eslint/explicit-module-boundary-types': 'error',
+                '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
             },
             settings: {
                 'import/resolver': {

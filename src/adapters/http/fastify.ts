@@ -1,4 +1,4 @@
-import Fastify, { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify'
+import Fastify, { type FastifyReply, type FastifyRequest, type HookHandlerDoneFunction } from 'fastify'
 import type { HttpAdapter, HttpResponse } from './api'
 import type { HttpServer } from '../../http'
 
