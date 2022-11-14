@@ -31,8 +31,61 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache eslint
+        id: cache-eslint
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-eslint
+        with:
+          path: .eslintcache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache TypeScript
+        id: cache-typescript
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-typescript
+        with:
+          path: .tsbuildinfo
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache prettier
+        id: cache-prettier
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-prettier
+        with:
+          path: node_modules/.cache/prettier/.prettier-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
+        if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
 
       - name: Lint the project
         run: npm run lint

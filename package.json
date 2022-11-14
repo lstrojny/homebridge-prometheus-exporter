@@ -16,7 +16,7 @@
     },
     "main": "dist/src/index.js",
     "scripts": {
-        "lint": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; `npm bin`/tsc --noEmit && `npm bin`/prettier --ignore-path=.gitignore `ifNotCi --write --check` '**/**.{ts,js,json}' && `npm bin`/eslint `ifNotCi --fix` --ignore-path=.gitignore '**/**.{ts,js,json}'",
+        "lint": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; `npm bin`/tsc --noEmit && `npm bin`/prettier --ignore-path=.gitignore `ifNotCi --write \"--check --cache --cache-strategy content\"` '**/**.{ts,js,json}' && `npm bin`/eslint `ifNotCi --fix \"--cache --cache-strategy content\"` --ignore-path=.gitignore '**/**.{ts,js,json}'",
         "start": "npm run build && npm run link && nodemon",
         "test": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npm run code-generation && `npm bin`/jest `ifNotCi --watchAll`",
         "link": "npm install --no-save file:///$PWD/",
