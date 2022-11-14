@@ -12,7 +12,9 @@
         "esModuleInterop": true,
         "importsNotUsedAsValues": "error",
         "noImplicitAny": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "tsBuildInfoFile": ".tsbuildinfo",
+        "incremental": true
     },
     "include": ["src/", "tests/"],
     "exclude": []

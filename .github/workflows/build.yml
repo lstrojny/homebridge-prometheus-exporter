@@ -44,6 +44,32 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Cache eslint
+        id: cache-eslint
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-eslint
+        with:
+          path: .eslintcache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache TypeScript
+        id: cache-typescript
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-typescript
+        with:
+          path: .tsbuildinfo
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
 
