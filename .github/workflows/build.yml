@@ -84,6 +84,3 @@ jobs:
 
       - name: Build the project
         run: npm run build
-
-      - name: Debug
-        run: ls -lha
