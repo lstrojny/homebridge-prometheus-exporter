@@ -1,9 +1,8 @@
 import type { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
 
 import { aggregate } from './metrics'
-import { discover } from './adapters/discovery/hap_node_js_client'
-import { serve } from './adapters/http/fastify'
-import type { HttpServerController } from './adapters/http/api'
+import { hapNodeJsClientDiscover as discover } from './adapters/discovery'
+import { type HttpServerController, fastifyServe as serve } from './adapters/http'
 import { PrometheusServer } from './prometheus'
 import { type Config, ConfigBoundary, checkBoundary } from './boundaries'
 
@@ -28,7 +27,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.log.debug('Starting Prometheus HTTP server on port %d', this.config.port)
 
-        this.httpServer = new PrometheusServer(this.config.port, this.log, this.config.debug, this.config.prefix)
+        this.httpServer = new PrometheusServer(this.config, this.log)
         serve(this.httpServer)
             .then((httpServerController) => {
                 this.log.debug('HTTP server started on port %d', this.config.port)
@@ -46,14 +45,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
     private startHapDiscovery(): void {
         this.log.debug('Starting HAP discovery')
-        discover({
-            logger: this.log,
-            refreshInterval: this.config.refresh_interval,
-            discoveryTimeout: this.config.discovery_timeout,
-            requestTimeout: this.config.request_timeout,
-            pin: this.config.pin,
-            debug: this.config.debug,
-        })
+        discover({ log: this.log, config: this.config })
             .then((devices) => {
                 const metrics = aggregate(devices, new Date())
                 this.httpServer.updateMetrics(metrics)

@@ -1,6 +1,5 @@
 import Fastify, { type FastifyReply, type FastifyRequest, type HookHandlerDoneFunction } from 'fastify'
-import type { HttpAdapter, HttpResponse } from './api'
-import type { HttpServer } from '../../http'
+import type { HttpAdapter, HttpResponse, HttpServer } from './api'
 
 function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void {
     if (response.statusCode) {
@@ -23,7 +22,7 @@ function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string
     return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
 }
 
-export const serve: HttpAdapter = async (server: HttpServer) => {
+export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
     const fastify = Fastify({
         logger: false,
         serverFactory: server.serverFactory,
@@ -32,7 +31,7 @@ export const serve: HttpAdapter = async (server: HttpServer) => {
     fastify.addHook('onResponse', (request: FastifyRequest, reply: FastifyReply) => {
         if (reply.statusCode >= 400) {
             server.log?.warn(formatCombinedLog(request, reply))
-        } else if (server.debug) {
+        } else if (server.config.debug) {
             server.log?.debug(formatCombinedLog(request, reply))
         }
     })
@@ -59,7 +58,7 @@ export const serve: HttpAdapter = async (server: HttpServer) => {
         adaptResponseToReply(server.onMetrics(), reply)
     })
 
-    await fastify.listen({ port: server.port, host: '::' })
+    await fastify.listen({ port: server.config.port, host: '::' })
 
     return {
         shutdown() {

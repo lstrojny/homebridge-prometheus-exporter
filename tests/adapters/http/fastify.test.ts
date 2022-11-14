@@ -1,9 +1,8 @@
 import { describe, test } from '@jest/globals'
 import request from 'supertest'
 import { PrometheusServer } from '../../../src/prometheus'
-import { serve } from '../../../src/adapters/http/fastify'
+import { type HttpServer, fastifyServe } from '../../../src/adapters/http'
 import { type Server, createServer } from 'http'
-import type { HttpServer } from '../../../src/http'
 import { Metric } from '../../../src/metrics'
 
 class TestablePrometheusServer extends PrometheusServer {
@@ -12,9 +11,9 @@ class TestablePrometheusServer extends PrometheusServer {
 
 function createTestServer(): { http: Server; prometheus: HttpServer } {
     const http = createServer()
-    const prometheus = new TestablePrometheusServer(0, undefined, false, 'homebridge')
+    const prometheus = new TestablePrometheusServer({ port: 0, debug: false, prefix: 'homebridge' })
     prometheus.serverFactory = (handler) => http.on('request', handler)
-    serve(prometheus).catch((err: Error) => {
+    fastifyServe(prometheus).catch((err: Error) => {
         if (!('code' in err) || (err as unknown as { code: unknown }).code !== 'ERR_SERVER_ALREADY_LISTEN') {
             console.debug(err)
         }

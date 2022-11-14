@@ -1,4 +1,4 @@
-import type { Accessory, Device, Service } from './boundaries/hap'
+import type { Accessory, Device, Service } from './boundaries'
 import { Uuids } from './generated/services'
 import { assertTypeExhausted, isType } from './std'
 

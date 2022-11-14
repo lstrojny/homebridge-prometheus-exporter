@@ -1,14 +1,9 @@
-import type { Device } from '../../boundaries/hap'
+import type { Config, Device } from '../../boundaries'
 import type { Logger } from 'homebridge'
 
-type Pin = string
-
-export interface HapConfig {
-    pin: Pin
-    refreshInterval: number
-    discoveryTimeout: number
-    requestTimeout: number
-    logger: Logger
-    debug: boolean
+export interface HapDiscoveryConfig {
+    config: Pick<Config, 'debug' | 'pin' | 'refresh_interval' | 'discovery_timeout' | 'request_timeout'>
+    log: Logger
 }
-export type HapDiscover = (config: HapConfig) => Promise<Device[]>
+
+export type HapDiscover = (config: HapDiscoveryConfig) => Promise<Device[]>

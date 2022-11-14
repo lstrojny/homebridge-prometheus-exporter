@@ -1,25 +1,18 @@
 import type { HapDiscover } from './api'
-import { HAPNodeJSClient } from 'hap-node-client'
+import { HAPNodeJSClient, type HAPNodeJSClientConfig } from 'hap-node-client'
 import { type Device, DeviceBoundary, checkBoundary } from '../../boundaries'
 import type { Logger } from 'homebridge'
 import z from 'zod'
 
 const MaybeDevices = z.array(z.unknown())
 
-interface HapConfig {
-    debug: boolean
-    refresh: number
-    timeout: number
-    reqTimeout: number
-    pin: string
-}
 type ResolveFunc = (devices: Device[]) => void
 type RejectFunc = (error: unknown) => void
 
 const clientMap: Record<string, HAPNodeJSClient> = {}
 const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
-function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc, reject: RejectFunc) {
+function startDiscovery(logger: Logger, config: HAPNodeJSClientConfig, resolve: ResolveFunc, reject: RejectFunc) {
     const key = JSON.stringify(config)
 
     if (!clientMap[key]) {
@@ -49,16 +42,16 @@ function startDiscovery(logger: Logger, config: HapConfig, resolve: ResolveFunc,
     promiseMap[key] = [resolve, reject]
 }
 
-export const discover: HapDiscover = ({ pin, refreshInterval, discoveryTimeout, requestTimeout, logger, debug }) => {
+export const hapNodeJsClientDiscover: HapDiscover = ({ config, log }) => {
     return new Promise((resolve, reject) => {
         startDiscovery(
-            logger,
+            log,
             {
-                debug: debug,
-                refresh: refreshInterval,
-                timeout: discoveryTimeout,
-                reqTimeout: requestTimeout,
-                pin,
+                debug: config.debug,
+                refresh: config.refresh_interval,
+                timeout: config.discovery_timeout,
+                reqTimeout: config.request_timeout,
+                pin: config.pin,
             },
             resolve,
             reject,
