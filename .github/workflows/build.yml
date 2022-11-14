@@ -70,6 +70,19 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Cache prettier
+        id: cache-prettier
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-prettier
+        with:
+          path: node_modules/.cache/prettier/.prettier-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
         if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
