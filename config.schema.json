@@ -52,6 +52,22 @@
                 "type": "integer",
                 "required": false,
                 "default": 20
+            },
+            "tls_cert_file": {
+                "description": "Path to TLS certificate file",
+                "type": "string",
+                "required": false
+            },
+            "tls_key_file": {
+                "description": "Path to TLS key file",
+                "type": "string",
+                "required": false
+            },
+            "basic_auth": {
+                "description": "Usernames and passwords for basic auth. Key is the username, value is the password. Password must be encoded with bcrypt",
+                "type": "object",
+                "additionalProperties": { "type": "string" },
+                "required": false
             }
         }
     }
