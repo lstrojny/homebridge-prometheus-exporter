@@ -18,7 +18,12 @@ export const ConfigBoundary = z.object({
         .int()
         .describe('Discovery timeout after which the current discovery is considered failed')
         .default(20),
-    tls_cert_file: z.string().describe('Path to TLS certificate file').optional(),
+    tls_cert_file: z.string().describe('Path to TLS certificate file (in PEM format)').optional(),
     tls_key_file: z.string().describe('Path to TLS key file').optional(),
-    basic_auth: z.record(z.string()).optional(),
+    basic_auth: z
+        .record(z.string())
+        .describe(
+            'Usernames and passwords for basic auth. Key is the username, value is the password. Password must be encoded with bcrypt',
+        )
+        .optional(),
 })
