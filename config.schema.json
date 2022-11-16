@@ -54,7 +54,7 @@
                 "default": 20
             },
             "tls_cert_file": {
-                "description": "Path to TLS certificate file",
+                "description": "Path to TLS certificate file (in PEM format)",
                 "type": "string",
                 "required": false
             },
