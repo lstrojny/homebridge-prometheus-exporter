@@ -20,7 +20,7 @@
         "start": "npm run build && npm run link && nodemon",
         "test": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npm run code-generation && `npm bin`/jest `ifNotCi --watchAll`",
         "link": "npm install --no-save file:///$PWD/",
-        "build": "rimraf ./dist && npm run code-generation && tsc",
+        "build": "rimraf ./dist .tsbuildinfo && npm run code-generation && tsc",
         "code-generation": "./code-generation/hap-gen.js && ./code-generation/config-scheme-gen.js",
         "prepublishOnly": "npm run code-generation && npm run lint && npm run build",
         "release": "release-it --only-version"
