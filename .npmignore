@@ -143,3 +143,4 @@ prettier.config.js
 jest.config.js
 nodemon.json
 /code-generation/
+/release.sh
