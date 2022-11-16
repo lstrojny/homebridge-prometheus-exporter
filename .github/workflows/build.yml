@@ -38,7 +38,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          key: node-modules-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
 
       - name: Cache eslint
         id: cache-eslint
@@ -47,7 +47,7 @@ jobs:
           cache-name: cache-eslint
         with:
           path: .eslintcache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          key: eslint-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
 
       - name: Cache TypeScript
         id: cache-typescript
@@ -56,7 +56,7 @@ jobs:
           cache-name: cache-typescript
         with:
           path: .tsbuildinfo
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          key: typescript-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
 
       - name: Cache prettier
         id: cache-prettier
@@ -65,7 +65,7 @@ jobs:
           cache-name: cache-prettier
         with:
           path: node_modules/.cache/prettier/.prettier-cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
+          key: prettier-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json,**/package.json') }}
 
       - name: Install dependencies
         run: npm install
