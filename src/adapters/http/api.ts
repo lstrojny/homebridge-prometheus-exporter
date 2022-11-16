@@ -15,7 +15,7 @@ export interface HttpServerController {
 
 export type HttpAdapter = (config: HttpServer) => Promise<HttpServerController>
 
-export type HttpConfig = Pick<Config, 'debug' | 'port' | 'prefix'>
+export type HttpConfig = Pick<Config, 'debug' | 'port' | 'prefix' | 'basic_auth' | 'tls_cert_file' | 'tls_key_file'>
 
 export interface HttpServer {
     log?: Logger
@@ -24,6 +24,6 @@ export interface HttpServer {
     onRequest(): HttpResponse | undefined
     onMetrics(): HttpResponse
     onNotFound(): HttpResponse
-    onError(error: unknown): HttpResponse
+    onError(error: Error): HttpResponse
     updateMetrics(metrics: Metric[]): void
 }

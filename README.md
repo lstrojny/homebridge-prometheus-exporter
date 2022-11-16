@@ -142,6 +142,18 @@ Once *Prometheus* is restarted, metrics with the `homebridge_` prefix should sta
 
       // Timeout for the service discovery (in seconds). Default: 20
       "discovery_timeout": number,
+
+      // Path to TLS certificate file (in PEM format)
+      "tls_cert_file": string,
+
+      // Path to TLS key file
+      "tls_key_file": string,
+
+      // Usernames and passwords for basic auth. Key is the username, value is the password.
+      // Password must be encoded with bcrypt
+      "basic_auth": {
+        "username": "<password encoded with bcrypt>"
+      }
     },
     // …
   ]

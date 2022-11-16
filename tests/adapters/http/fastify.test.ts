@@ -10,8 +10,17 @@ class TestablePrometheusServer extends PrometheusServer {
 }
 
 function createTestServer(): { http: Server; prometheus: HttpServer } {
+    return createTestServerWithBasicAuth({})
+}
+
+function createTestServerWithBasicAuth(basicAuth: Record<string, string>): { http: Server; prometheus: HttpServer } {
     const http = createServer()
-    const prometheus = new TestablePrometheusServer({ port: 0, debug: false, prefix: 'homebridge' })
+    const prometheus = new TestablePrometheusServer({
+        port: 0,
+        debug: false,
+        prefix: 'homebridge',
+        basic_auth: basicAuth,
+    })
     prometheus.serverFactory = (handler) => http.on('request', handler)
     fastifyServe(prometheus).catch((err: Error) => {
         if (!('code' in err) || (err as unknown as { code: unknown }).code !== 'ERR_SERVER_ALREADY_LISTEN') {
@@ -21,6 +30,8 @@ function createTestServer(): { http: Server; prometheus: HttpServer } {
 
     return { http, prometheus }
 }
+
+const secretAsBcrypt = '$2b$12$B8C9hsi2idheYOdSM9au0.6DbD6z44iI5dZo.72AYLsAEiNdnqNPG'
 
 describe('Fastify HTTP adapter', () => {
     test('Serves 503 everywhere while metrics are not available', () => {
@@ -53,6 +64,52 @@ describe('Fastify HTTP adapter', () => {
 
         return request(testServer.http)
             .get('/metrics')
+            .expect(200)
+            .expect('Content-Type', 'text/plain; charset=utf-8; version=0.0.4')
+            .expect(
+                [
+                    '# TYPE homebridge_metric gauge',
+                    'homebridge_metric{name="metric"} 0.1 1577836800000',
+                    '# TYPE homebridge_something_total counter',
+                    'homebridge_something_total{name="counter"} 100 1577836800000',
+                ].join('\n'),
+            )
+    })
+
+    test('Basic auth denied without user', () => {
+        const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
+        testServer.prometheus.updateMetrics([])
+
+        return request(testServer.http)
+            .get('/metrics')
+            .expect(401)
+            .expect('Content-Type', 'text/plain; charset=utf-8')
+            .expect('Missing or bad formatted authorization header')
+    })
+
+    test('Basic auth denied with incorrect user', () => {
+        const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
+        testServer.prometheus.updateMetrics([])
+
+        return request(testServer.http)
+            .get('/metrics')
+            .auth('john', 'secret')
+            .expect(401)
+            .expect('Content-Type', 'text/plain; charset=utf-8')
+            .expect('Unauthorized')
+    })
+
+    test('Basic auth grants access', () => {
+        const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
+        const timestamp = new Date('2020-01-01 00:00:00 UTC')
+        testServer.prometheus.updateMetrics([
+            new Metric('metric', 0.1, timestamp, { name: 'metric' }),
+            new Metric('total_something', 100, timestamp, { name: 'counter' }),
+        ])
+
+        return request(testServer.http)
+            .get('/metrics')
+            .auth('joanna', 'secret')
             .expect(200)
             .expect('Content-Type', 'text/plain; charset=utf-8; version=0.0.4')
             .expect(

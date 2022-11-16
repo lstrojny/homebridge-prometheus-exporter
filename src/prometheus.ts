@@ -74,12 +74,11 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    onError(error: unknown): HttpResponse {
+    onError(error: Error): HttpResponse {
         this.log?.error('HTTP request error: %o', error)
         return {
-            statusCode: 500,
             headers: headers(textContentType),
-            body: 'Server error',
+            body: error.message,
         }
     }
 
