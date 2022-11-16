@@ -26,7 +26,8 @@ function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string
     return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
 }
 
-function createFastify(server: HttpServer): ReturnType<typeof Fastify> {
+type FastifyServer = ReturnType<typeof Fastify>
+function createFastify(server: HttpServer): FastifyServer {
     const config = { logger: false }
 
     if (server.config.tls_cert_file && server.config.tls_key_file) {
@@ -96,11 +97,21 @@ export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
         adaptResponseToReply(server.onMetrics(), reply)
     })
 
-    await fastify.listen({ port: server.config.port, host: '::' })
+    await listen(fastify, server.config.port, '::')
 
     return {
         shutdown() {
             void fastify.close()
         },
+    }
+}
+
+async function listen(fastify: FastifyServer, port: number, host: string): Promise<void> {
+    try {
+        await fastify.listen({ port, host })
+    } catch (e: unknown) {
+        if (host === '::' && e instanceof Error && (e as Error & { code: string }).code === 'EAFNOSUPPORT') {
+            await listen(fastify, port, '0.0.0.0')
+        }
     }
 }
