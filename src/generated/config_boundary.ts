@@ -6,7 +6,13 @@ export const ConfigBoundary = z.object({
     pin: z.string().regex(new RegExp('^\\d{3}-\\d{2}-\\d{3}$')).describe('Homebridge PIN for service authentication'),
     debug: z.boolean().default(false),
     prefix: z.string().default('homebridge'),
-    port: z.number().int().describe('TCP port for the prometheus probe server to listen to').default(36123),
+    port: z.number().int().describe('TCP port where the Prometheus metrics server listens').default(36123),
+    interface: z
+        .string()
+        .describe(
+            'Interface where the Prometheus metrics server listens. Can be an IP, a hostname, "0.0.0.0" for all IPv4 interfaces, "::1" for all IPv6 interfaces. Default is "::" which means "any interface"',
+        )
+        .default('::'),
     refresh_interval: z.number().int().describe('Discover new services every <interval> seconds').default(60),
     request_timeout: z
         .number()
@@ -23,7 +29,7 @@ export const ConfigBoundary = z.object({
     basic_auth: z
         .record(z.string())
         .describe(
-            'Usernames and passwords for basic auth. Key is the username, value is the password. Password must be encoded with bcrypt',
+            'Usernames and passwords for basic auth. Object key is the username, object value is the password. Password must be encoded with bcrypt. Example: {"joanna": "$2a$12$5/mmmRB28wg9yzaXhee5Iupq3UrFr/qMgAe9LvAxGoY5jLcfVGTUq"}',
         )
         .optional(),
 })

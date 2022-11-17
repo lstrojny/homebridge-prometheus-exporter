@@ -97,7 +97,7 @@ export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
         adaptResponseToReply(server.onMetrics(), reply)
     })
 
-    await listen(fastify, server.config.port, '::')
+    await listen(fastify, server.config.port, server.config.interface)
 
     return {
         shutdown() {

@@ -26,11 +26,17 @@
                 "default": "homebridge"
             },
             "port": {
-                "title": "Probe server port",
-                "description": "TCP port for the prometheus probe server to listen to",
+                "title": "Metrics server port",
+                "description": "TCP port where the Prometheus metrics server listens",
                 "type": "integer",
                 "required": false,
                 "default": 36123
+            },
+            "interface": {
+                "title": "Metrics server interface",
+                "description": "Interface where the Prometheus metrics server listens. Can be an IP, a hostname, \"0.0.0.0\" for all IPv4 interfaces, \"::1\" for all IPv6 interfaces. Default is \"::\" which means \"any interface\"",
+                "type": "string",
+                "default": "::"
             },
             "refresh_interval": {
                 "title": "Service refresh interval",
@@ -54,17 +60,20 @@
                 "default": 20
             },
             "tls_cert_file": {
+                "title": "TLS cert file",
                 "description": "Path to TLS certificate file (in PEM format)",
                 "type": "string",
                 "required": false
             },
             "tls_key_file": {
+                "title": "TLS key file",
                 "description": "Path to TLS key file",
                 "type": "string",
                 "required": false
             },
             "basic_auth": {
-                "description": "Usernames and passwords for basic auth. Key is the username, value is the password. Password must be encoded with bcrypt",
+                "title": "Basic auth username/password pairs",
+                "description": "Usernames and passwords for basic auth. Object key is the username, object value is the password. Password must be encoded with bcrypt. Example: {\"joanna\": \"$2a$12$5/mmmRB28wg9yzaXhee5Iupq3UrFr/qMgAe9LvAxGoY5jLcfVGTUq\"}",
                 "type": "object",
                 "additionalProperties": { "type": "string" },
                 "required": false
