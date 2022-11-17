@@ -17,6 +17,7 @@ function createTestServerWithBasicAuth(basicAuth: Record<string, string>): { htt
     const http = createServer()
     const prometheus = new TestablePrometheusServer({
         port: 0,
+        interface: 'localhost',
         debug: false,
         prefix: 'homebridge',
         basic_auth: basicAuth,

@@ -134,6 +134,11 @@ Once *Prometheus* is restarted, metrics with the `homebridge_` prefix should sta
       // TCP port where the Prometheus metrics server listens. Default: 36123
       "port": number,
 
+      // Interface where the Prometheus metrics server listens. Default: "::" which means "any interface".
+      // Can be an IP, a hostname, "0.0.0.0" for all IPv4 interfaces, "::1" for all IPv6 interfaces.
+      // Default is "::" which means any interface
+      "interface": string,
+
       // How frequently the services should be rediscovered (in seconds). Default: 60
       "refresh_interval": number,
 
