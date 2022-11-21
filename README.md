@@ -11,7 +11,8 @@
          width="10%"/>
 </div>
 
-# Homebridge Prometheus Exporter [![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml)
+# Homebridge Prometheus Exporter
+[![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml) [![npm version](https://badge.fury.io/js/homebridge-prometheus-exporter.svg)](https://badge.fury.io/js/homebridge-prometheus-exporter) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/lstrojny/homebridge-prometheus-exporter) ![npm](https://img.shields.io/npm/dw/homebridge-prometheus-exporter)
 
 > What if we could store homebridge metrics in Prometheus
 
