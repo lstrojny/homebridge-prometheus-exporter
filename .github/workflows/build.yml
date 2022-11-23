@@ -10,21 +10,23 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { node-version: 10.x, lint: false, tests: false }
-          - { node-version: 11.x, lint: false, tests: false }
-          - { node-version: 12.x, lint: false, tests: false }
-          - { node-version: 13.x, lint: false, tests: false }
-          - { node-version: 14.x, lint: true, tests: true }
-          - { node-version: 15.x, lint: false, tests: true }
-          - { node-version: 16.x, lint: true, tests: true }
-          - { node-version: 17.x, lint: true, tests: true }
-          - { node-version: 18.x, lint: true, tests: true }
-          - { node-version: 19.x, lint: true, tests: true }
+          - { node-version: 10.x, lint: false, static-analysis: false, tests: false }
+          - { node-version: 11.x, lint: false, static-analysis: false, tests: false }
+          - { node-version: 12.x, lint: false, static-analysis: false, tests: false }
+          - { node-version: 13.x, lint: false, static-analysis: false, tests: false }
+          - { node-version: 14.x, lint: true, static-analysis: false, tests: true }
+          - { node-version: 15.x, lint: false, static-analysis: false, tests: true }
+          - { node-version: 16.x, lint: true, static-analysis: false, tests: true }
+          - { node-version: 17.x, lint: true, static-analysis: false, tests: true }
+          - { node-version: 18.x, lint: true, static-analysis: true, tests: true }
+          - { node-version: 19.x, lint: true, static-analysis: false, tests: true }
 
-    name: Node.js ${{ matrix.node-version }}${{ matrix.lint && ', lint' || '' }}${{ matrix.tests && ', test' || '' }}, build
+    name: Node.js ${{ matrix.node-version }}${{ matrix.lint && ', lint' || '' }}${{ matrix.static-analysis && ', static analysis' || ''}}${{ matrix.tests && ', test' || '' }}, build
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -74,6 +76,13 @@ jobs:
       - name: Lint the project
         run: npm run lint
         if: ${{ matrix.lint }}
+
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        if: ${{ matrix.static-analysis }}
 
       - name: Run tests
         run: npm test
