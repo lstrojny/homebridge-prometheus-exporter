@@ -17,7 +17,7 @@ export class Metric {
 const METRICS_FILTER = ['Identifier']
 
 export function aggregate(devices: Device[], timestamp: Date): Metric[] {
-    const metrics: Metric[] = []
+    const metrics: Metric[][] = []
 
     for (const device of devices) {
         for (const accessory of device.accessories.accessories) {
@@ -27,39 +27,47 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
                     ...getAccessoryLabels(accessory),
                     ...getServiceLabels(service),
                 }
-                for (const characteristic of service.characteristics) {
-                    const format = characteristic.format
-                    switch (format) {
-                        case 'string':
-                        case 'tlv8':
-                        case 'data':
-                            break
-
-                        case 'bool':
-                        case 'float':
-                        case 'int':
-                        case 'uint8':
-                        case 'uint16':
-                        case 'uint32':
-                        case 'uint64':
-                            if (characteristic.value != null) {
-                                if (METRICS_FILTER.includes(characteristic.description)) {
-                                    break
-                                }
-                                const name = formatName(
-                                    Uuids[service.type] || 'custom',
-                                    characteristic.description,
-                                    characteristic.unit,
-                                )
-                                metrics.push(new Metric(name, characteristic.value, timestamp, labels))
-                            }
-                            break
-
-                        default:
-                            assertTypeExhausted(format)
-                    }
-                }
+                metrics.push(extractMetrics(service, timestamp, labels))
             }
+        }
+    }
+
+    return metrics.flat()
+}
+
+function extractMetrics(service: Service, timestamp: Date, labels: Record<string, string>) {
+    const metrics: Metric[] = []
+
+    for (const characteristic of service.characteristics) {
+        const format = characteristic.format
+        switch (format) {
+            case 'string':
+            case 'tlv8':
+            case 'data':
+                break
+
+            case 'bool':
+            case 'float':
+            case 'int':
+            case 'uint8':
+            case 'uint16':
+            case 'uint32':
+            case 'uint64':
+                if (characteristic.value != null) {
+                    if (METRICS_FILTER.includes(characteristic.description)) {
+                        break
+                    }
+                    const name = formatName(
+                        Uuids[service.type] || 'custom',
+                        characteristic.description,
+                        characteristic.unit,
+                    )
+                    metrics.push(new Metric(name, characteristic.value, timestamp, labels))
+                }
+                break
+
+            default:
+                assertTypeExhausted(format)
         }
     }
 
