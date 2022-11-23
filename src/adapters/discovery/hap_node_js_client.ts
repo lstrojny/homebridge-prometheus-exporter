@@ -12,21 +12,26 @@ type RejectFunc = (error: unknown) => void
 const clientMap: Record<string, HAPNodeJSClient> = {}
 const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
-function startDiscovery(logger: Logger, config: HAPNodeJSClientConfig, resolve: ResolveFunc, reject: RejectFunc) {
+function startDiscovery(
+    logger: Logger | undefined,
+    config: HAPNodeJSClientConfig,
+    resolve: ResolveFunc,
+    reject: RejectFunc,
+) {
     const key = JSON.stringify(config)
 
     promiseMap[key] = [resolve, reject]
 
     if (!clientMap[key]) {
-        logger.debug('Creating new HAP client')
+        logger?.debug('Creating new HAP client')
         clientMap[key] = new HAPNodeJSClient(config)
         clientMap[key].on('Ready', createDiscoveryHandler(logger, key))
     } else {
-        logger.debug('Reusing existing HAP client')
+        logger?.debug('Reusing existing HAP client')
     }
 }
 
-function createDiscoveryHandler(logger: Logger, key: string): (deviceData: unknown) => void {
+function createDiscoveryHandler(logger: Logger | undefined, key: string): (deviceData: unknown) => void {
     return (deviceData: unknown) => {
         try {
             const devices: Device[] = []
@@ -35,7 +40,7 @@ function createDiscoveryHandler(logger: Logger, key: string): (deviceData: unkno
                 try {
                     devices.push(checkBoundary(DeviceBoundary, device))
                 } catch (e) {
-                    logger.error('Boundary check for device data failed %o %s', e, JSON.stringify(device, null, 4))
+                    logger?.error('Boundary check for device data failed %o %s', e, JSON.stringify(device, null, 4))
                 }
             }
 
