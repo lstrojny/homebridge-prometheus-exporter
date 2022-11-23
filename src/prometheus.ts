@@ -26,7 +26,9 @@ export class MetricsRenderer {
     private metricName(name: string): string {
         name = name.replace(/^(.*_)?(total)_(.*)$/, '$1$3_$2')
 
-        return sanitizePrometheusMetricName(this.prefix.replace(/_+/, '') + '_' + name)
+        return sanitizePrometheusMetricName(
+            this.prefix.split('').reverse().join('').replace(/^_+/, '').split('').reverse().join('') + '_' + name,
+        )
     }
 }
 
