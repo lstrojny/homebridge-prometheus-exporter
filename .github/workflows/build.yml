@@ -21,7 +21,7 @@ jobs:
           - { node-version: 18.x, lint: true, static-analysis: true, tests: true }
           - { node-version: 19.x, lint: true, static-analysis: false, tests: true }
 
-    name: Node.js ${{ matrix.node-version }}${{ matrix.lint && ', lint' || '' }}${{ matrix.static-analysis && ', static analysis' || ''}}${{ matrix.tests && ', test' || '' }}, build
+    name: Node.js ${{ matrix.node-version }}${{ matrix.lint && ', lint' || '' }}${{ matrix.tests && ', test' || '' }}${{ matrix.static-analysis && ', static analysis' || ''}}, build
 
     steps:
       - uses: actions/checkout@v3
