@@ -12,7 +12,7 @@
 </div>
 
 # Homebridge Prometheus Exporter
-[![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml) [![npm version](https://badge.fury.io/js/homebridge-prometheus-exporter.svg)](https://badge.fury.io/js/homebridge-prometheus-exporter) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/lstrojny/homebridge-prometheus-exporter) ![npm](https://img.shields.io/npm/dw/homebridge-prometheus-exporter)
+[![CI](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/lstrojny/homebridge-prometheus-exporter/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lstrojny_homebridge-prometheus-exporter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lstrojny_homebridge-prometheus-exporter) [![npm version](https://badge.fury.io/js/homebridge-prometheus-exporter.svg)](https://badge.fury.io/js/homebridge-prometheus-exporter) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/lstrojny/homebridge-prometheus-exporter) ![npm](https://img.shields.io/npm/dw/homebridge-prometheus-exporter)
 
 > What if we could store homebridge metrics in Prometheus
 
