@@ -44,7 +44,7 @@ function headers(contentType: string, headers: Record<string, string> = {}): Rec
 }
 
 export class PrometheusServer implements HttpServer {
-    private metricsInitialized = false
+    private metricsDiscovered = false
     private metricsResponse = ''
 
     constructor(
@@ -54,7 +54,7 @@ export class PrometheusServer implements HttpServer {
     ) {}
 
     onRequest(): HttpResponse | undefined {
-        if (!this.metricsInitialized) {
+        if (!this.metricsDiscovered) {
             return {
                 statusCode: 503,
                 headers: headers(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
@@ -89,7 +89,7 @@ export class PrometheusServer implements HttpServer {
 
     updateMetrics(metrics: Metric[]): void {
         this.metricsResponse = metrics.map((metric) => this.renderer.render(metric)).join('\n')
-        this.metricsInitialized = true
+        this.metricsDiscovered = true
     }
 }
 
