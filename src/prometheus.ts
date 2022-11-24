@@ -3,7 +3,11 @@ import type { Logger } from 'homebridge'
 import type { HttpConfig, HttpResponse, HttpServer } from './adapters/http'
 
 export class MetricsRenderer {
-    constructor(private readonly prefix: string) {}
+    private readonly prefix: string
+
+    constructor(prefix: string) {
+        this.prefix = trimRight(prefix, '_')
+    }
 
     render(metric: Metric): string {
         const name = this.metricName(metric.name)
@@ -26,8 +30,12 @@ export class MetricsRenderer {
     private metricName(name: string): string {
         name = name.replace(/^(.*_)?(total)_(.*)$/, '$1$3_$2')
 
-        return sanitizePrometheusMetricName(stringReverse(stringReverse(this.prefix).replace(/^_+/, '')) + '_' + name)
+        return sanitizePrometheusMetricName(`${this.prefix}_${name}`)
     }
+}
+
+function trimRight(str: string, char: string): string {
+    return stringReverse(stringReverse(str).replace(new RegExp(`^[${char}]+`), ''))
 }
 
 function stringReverse(str: string): string {
