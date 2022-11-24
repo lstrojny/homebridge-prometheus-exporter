@@ -1,5 +1,6 @@
 import Fastify, { type FastifyReply, type FastifyRequest, type HookHandlerDoneFunction } from 'fastify'
 import { readFileSync } from 'fs'
+import { constants as HttpConstants } from 'http2'
 import { isAuthenticated } from '../../security'
 import type { HttpAdapter, HttpResponse, HttpServer } from './api'
 import fastifyAuth from '@fastify/auth'
@@ -68,8 +69,8 @@ export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
     }
 
     fastify.addHook('onResponse', (request: FastifyRequest, reply: FastifyReply) => {
-        if (reply.statusCode >= 400) {
-            server.log?.warn(formatCombinedLog(request, reply))
+        if (reply.statusCode >= HttpConstants.HTTP_STATUS_BAD_REQUEST) {
+            server.log?.error(formatCombinedLog(request, reply))
         } else if (server.config.debug) {
             server.log?.debug(formatCombinedLog(request, reply))
         }
