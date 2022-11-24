@@ -47,7 +47,7 @@ const textContentType = 'text/plain; charset=utf-8'
 const prometheusSpecVersion = '0.0.4'
 const metricsContentType = `${textContentType}; version=${prometheusSpecVersion}`
 
-function headers(contentType: string, headers: Record<string, string> = {}): Record<string, string> {
+function withHeaders(contentType: string, headers: Record<string, string> = {}): Record<string, string> {
     return { ...headers, 'Content-Type': contentType }
 }
 
@@ -65,7 +65,7 @@ export class PrometheusServer implements HttpServer {
         if (!this.metricsDiscovered) {
             return {
                 statusCode: 503,
-                headers: headers(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
+                headers: withHeaders(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
                 body: 'Metrics discovery pending',
             }
         }
@@ -74,7 +74,7 @@ export class PrometheusServer implements HttpServer {
     onMetrics(): HttpResponse {
         return {
             statusCode: 200,
-            headers: headers(metricsContentType),
+            headers: withHeaders(metricsContentType),
             body: this.metricsResponse,
         }
     }
@@ -82,7 +82,7 @@ export class PrometheusServer implements HttpServer {
     onNotFound(): HttpResponse {
         return {
             statusCode: 404,
-            headers: headers(textContentType),
+            headers: withHeaders(textContentType),
             body: 'Not found. Try /metrics',
         }
     }
@@ -90,7 +90,7 @@ export class PrometheusServer implements HttpServer {
     onError(error: Error): HttpResponse {
         this.log?.error('HTTP request error: %o', error)
         return {
-            headers: headers(textContentType),
+            headers: withHeaders(textContentType),
             body: error.message,
         }
     }
