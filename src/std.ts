@@ -8,10 +8,17 @@ interface TypeMap {
     undefined: undefined
 }
 
+// Type predicate higher order function for use with e.g. filter or map
 export function isType<T extends keyof TypeMap>(type: T): (v: unknown) => v is TypeMap[T] {
     return (v: unknown): v is TypeMap[T] => typeof v === type
 }
 
+// Type predicate for object keys
+export function isObjectKey<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
+    return key in obj
+}
+
+// Use for exhaustiveness checks in switch/case
 export function assertTypeExhausted(v: never): never {
     throw new Error(`Type should be exhausted but is not. Value "${JSON.stringify(v)}`)
 }
