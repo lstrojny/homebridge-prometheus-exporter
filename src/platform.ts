@@ -48,7 +48,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
         discover({ log: this.log, config: this.config })
             .then((devices) => {
                 const metrics = aggregate(devices, new Date())
-                this.httpServer.updateMetrics(metrics)
+                this.httpServer.onMetricsDiscovery(metrics)
                 this.log.debug('HAP discovery completed, %d metrics discovered', metrics.length)
                 this.startHapDiscovery()
             })

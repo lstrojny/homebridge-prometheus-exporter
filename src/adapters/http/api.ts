@@ -28,5 +28,5 @@ export interface HttpServer {
     onMetrics(): HttpResponse
     onNotFound(): HttpResponse
     onError(error: Error): HttpResponse
-    updateMetrics(metrics: Metric[]): void
+    onMetricsDiscovery(metrics: Metric[]): void
 }
