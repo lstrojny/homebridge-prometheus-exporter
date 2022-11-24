@@ -26,10 +26,12 @@ export class MetricsRenderer {
     private metricName(name: string): string {
         name = name.replace(/^(.*_)?(total)_(.*)$/, '$1$3_$2')
 
-        return sanitizePrometheusMetricName(
-            this.prefix.split('').reverse().join('').replace(/^_+/, '').split('').reverse().join('') + '_' + name,
-        )
+        return sanitizePrometheusMetricName(stringReverse(stringReverse(this.prefix).replace(/^_+/, '')) + '_' + name)
     }
+}
+
+function stringReverse(str: string): string {
+    return str.split('').reverse().join('')
 }
 
 const retryAfterWhileDiscovery = 15
