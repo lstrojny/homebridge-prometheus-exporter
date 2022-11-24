@@ -8,7 +8,7 @@ import { type Config, ConfigBoundary, checkBoundary } from './boundaries'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer
-    private httpServerController: HttpServerController | undefined = undefined
+    private httpServerController: HttpServerController | null = null
     private readonly config: Config
 
     constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {

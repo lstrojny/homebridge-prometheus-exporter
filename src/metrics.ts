@@ -1,13 +1,15 @@
 import type { Accessory, Device, Service } from './boundaries'
-import { Uuids } from './generated/services'
-import { assertTypeExhausted, isType } from './std'
+import { Services, Uuids } from './generated/services'
+import { assertTypeExhausted, isKeyOfConstObject, isType, strCamelCaseToSnakeCase } from './std'
+
+type Labels = Record<string, string>
 
 export class Metric {
     constructor(
         public readonly name: string,
         public readonly value: number,
         public readonly timestamp: Date | null = null,
-        public readonly labels: Record<string, string> = {},
+        public readonly labels: Labels = {},
     ) {}
 }
 
@@ -35,7 +37,7 @@ export function aggregate(devices: Device[], timestamp: Date): Metric[] {
     return metrics.flat()
 }
 
-function extractMetrics(service: Service, timestamp: Date, labels: Record<string, string>) {
+function extractMetrics(service: Service, timestamp: Date, labels: Labels): Metric[] {
     const metrics: Metric[] = []
 
     for (const characteristic of service.characteristics) {
@@ -63,7 +65,7 @@ function extractMetrics(service: Service, timestamp: Date, labels: Record<string
             case 'uint64':
                 {
                     const name = formatName(
-                        Uuids[service.type] || 'custom',
+                        isKeyOfConstObject(service.type, Uuids) ? Uuids[service.type] : 'custom',
                         characteristic.description,
                         characteristic.unit,
                     )
@@ -79,45 +81,35 @@ function extractMetrics(service: Service, timestamp: Date, labels: Record<string
     return metrics
 }
 
-export function formatName(serviceName: string, description: string, unit: string | undefined = undefined): string {
+export function formatName(serviceName: string, description: string, unit: string | null = null): string {
     return (
         [serviceName, description, typeof unit === 'string' ? unit.toLowerCase() : undefined]
             .filter(isType('string'))
-            .map((v) => camelCaseToSnakeCase(v))
+            .map((val) => strCamelCaseToSnakeCase(val))
             // Remove duplicate prefix
-            .reduce((carry, value) => (value.startsWith(carry) ? value : `${carry}_${value}`))
+            .reduce((carry, val) => (val.startsWith(carry) ? val : `${carry}_${val}`))
     )
 }
 
-function camelCaseToSnakeCase(str: string): string {
-    return str
-        .replace(/\B([A-Z][a-z])/g, ' $1')
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '_')
-}
-
-function getDeviceLabels(device: Device): Record<string, string> {
+function getDeviceLabels(device: Device): Labels {
     return {
         bridge: device.instance.name,
         device_id: device.instance.deviceID,
     }
 }
 
-function getAccessoryLabels(accessory: Accessory): Record<string, string> {
-    const labels: Record<string, string> = {}
-
+function getAccessoryLabels(accessory: Accessory): Labels {
     for (const service of accessory.services) {
-        if (service.type === '0000003E-0000-1000-8000-0026BB765291') {
+        if (service.type === Services.AccessoryInformation) {
             return getServiceLabels(service)
         }
     }
 
-    return labels
+    return {}
 }
 
-function getServiceLabels(service: Service): Record<string, string> {
-    const labels: Record<string, string> = {}
+function getServiceLabels(service: Service): Labels {
+    const labels: Labels = {}
 
     for (const characteristic of service.characteristics) {
         if (
@@ -134,7 +126,7 @@ function getServiceLabels(service: Service): Record<string, string> {
                 'Hardware Revision',
             ].includes(characteristic.description)
         ) {
-            labels[camelCaseToSnakeCase(characteristic.description)] = characteristic.value
+            labels[strCamelCaseToSnakeCase(characteristic.description)] = characteristic.value
         }
     }
 
