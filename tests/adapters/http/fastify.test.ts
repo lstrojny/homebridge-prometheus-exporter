@@ -46,7 +46,7 @@ describe('Fastify HTTP adapter', () => {
 
     test('Serves 404 on / when metrics are available', () => {
         const testServer = createTestServer()
-        testServer.prometheus.updateMetrics([])
+        testServer.prometheus.onMetricsDiscovery([])
 
         return request(testServer.http)
             .get('/')
@@ -58,7 +58,7 @@ describe('Fastify HTTP adapter', () => {
     test('Serves metrics', () => {
         const testServer = createTestServer()
         const timestamp = new Date('2020-01-01 00:00:00 UTC')
-        testServer.prometheus.updateMetrics([
+        testServer.prometheus.onMetricsDiscovery([
             new Metric('metric', 0.1, timestamp, { name: 'metric' }),
             new Metric('total_something', 100, timestamp, { name: 'counter' }),
         ])
@@ -79,7 +79,7 @@ describe('Fastify HTTP adapter', () => {
 
     test('Basic auth denied without user', () => {
         const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
-        testServer.prometheus.updateMetrics([])
+        testServer.prometheus.onMetricsDiscovery([])
 
         return request(testServer.http)
             .get('/metrics')
@@ -90,7 +90,7 @@ describe('Fastify HTTP adapter', () => {
 
     test('Basic auth denied with incorrect user', () => {
         const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
-        testServer.prometheus.updateMetrics([])
+        testServer.prometheus.onMetricsDiscovery([])
 
         return request(testServer.http)
             .get('/metrics')
@@ -103,7 +103,7 @@ describe('Fastify HTTP adapter', () => {
     test('Basic auth grants access', () => {
         const testServer = createTestServerWithBasicAuth({ joanna: secretAsBcrypt })
         const timestamp = new Date('2020-01-01 00:00:00 UTC')
-        testServer.prometheus.updateMetrics([
+        testServer.prometheus.onMetricsDiscovery([
             new Metric('metric', 0.1, timestamp, { name: 'metric' }),
             new Metric('total_something', 100, timestamp, { name: 'counter' }),
         ])

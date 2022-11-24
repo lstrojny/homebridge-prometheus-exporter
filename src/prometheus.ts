@@ -87,7 +87,7 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    updateMetrics(metrics: Metric[]): void {
+    onMetricsDiscovery(metrics: Metric[]): void {
         this.metricsResponse = metrics.map((metric) => this.renderer.render(metric)).join('\n')
         this.metricsDiscovered = true
     }
