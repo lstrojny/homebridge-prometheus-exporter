@@ -39,6 +39,14 @@ function extractMetrics(service: Service, timestamp: Date, labels: Record<string
     const metrics: Metric[] = []
 
     for (const characteristic of service.characteristics) {
+        if (METRICS_FILTER.includes(characteristic.description)) {
+            continue
+        }
+
+        if (characteristic.value == null) {
+            continue
+        }
+
         const format = characteristic.format
         switch (format) {
             case 'string':
@@ -53,10 +61,7 @@ function extractMetrics(service: Service, timestamp: Date, labels: Record<string
             case 'uint16':
             case 'uint32':
             case 'uint64':
-                if (characteristic.value != null) {
-                    if (METRICS_FILTER.includes(characteristic.description)) {
-                        break
-                    }
+                {
                     const name = formatName(
                         Uuids[service.type] || 'custom',
                         characteristic.description,
