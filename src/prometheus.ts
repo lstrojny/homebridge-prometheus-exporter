@@ -1,12 +1,13 @@
-import type { Metric } from './metrics'
 import type { Logger } from 'homebridge'
 import type { HttpConfig, HttpResponse, HttpServer } from './adapters/http'
+import type { Metric } from './metrics'
+import { strTrimRight } from './std'
 
 export class MetricsRenderer {
     private readonly prefix: string
 
     constructor(prefix: string) {
-        this.prefix = trimRight(prefix, '_')
+        this.prefix = strTrimRight(prefix, '_')
     }
 
     render(metric: Metric): string {
@@ -21,7 +22,7 @@ export class MetricsRenderer {
 
     private renderLabels(labels: Metric['labels']): string {
         const rendered = Object.entries(labels)
-            .map(([key, value]) => `${sanitizePrometheusMetricName(key)}="${escapeAttributeValue(value)}"`)
+            .map(([label, val]) => `${sanitizePrometheusMetricName(label)}="${escapeAttributeValue(val)}"`)
             .join(',')
 
         return rendered !== '' ? '{' + rendered + '}' : ''
@@ -32,14 +33,6 @@ export class MetricsRenderer {
 
         return sanitizePrometheusMetricName(`${this.prefix}_${name}`)
     }
-}
-
-function trimRight(str: string, char: string): string {
-    return stringReverse(stringReverse(str).replace(new RegExp(`^[${char}]+`), ''))
-}
-
-function stringReverse(str: string): string {
-    return str.split('').reverse().join('')
 }
 
 const retryAfterWhileDiscovery = 15
@@ -57,17 +50,19 @@ export class PrometheusServer implements HttpServer {
 
     constructor(
         public readonly config: HttpConfig,
-        public readonly log: Logger | undefined = undefined,
+        public readonly log: Logger | null = null,
         private readonly renderer: MetricsRenderer = new MetricsRenderer(config.prefix),
     ) {}
 
-    onRequest(): HttpResponse | undefined {
-        if (!this.metricsDiscovered) {
-            return {
-                statusCode: 503,
-                headers: withHeaders(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
-                body: 'Metrics discovery pending',
-            }
+    onRequest(): HttpResponse | null {
+        if (this.metricsDiscovered) {
+            return null
+        }
+
+        return {
+            statusCode: 503,
+            headers: withHeaders(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
+            body: 'Metrics discovery pending',
         }
     }
 
@@ -113,7 +108,7 @@ function escapeString(str: string) {
  *
  * `undefined` is converted to an empty string.
  */
-function escapeAttributeValue(str: string) {
+function escapeAttributeValue(str: Metric['labels'][keyof Metric['labels']]) {
     if (typeof str !== 'string') {
         str = JSON.stringify(str)
     }

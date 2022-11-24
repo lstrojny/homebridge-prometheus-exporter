@@ -21,10 +21,10 @@ export type HttpConfig = Pick<
 >
 
 export interface HttpServer {
-    log?: Logger
+    log: Logger | null
     config: HttpConfig
     serverFactory?: (requestListener: RequestListener) => Server
-    onRequest(): HttpResponse | undefined
+    onRequest(): HttpResponse | null
     onMetrics(): HttpResponse
     onNotFound(): HttpResponse
     onError(error: Error): HttpResponse
