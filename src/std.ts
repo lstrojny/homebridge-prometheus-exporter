@@ -14,7 +14,8 @@ export function isType<T extends keyof TypeMap>(type: T): (v: unknown) => v is T
 }
 
 // Type predicate for object keys
-export function isObjectKey<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
+// Only safe for const objects, as other objects might carry additional, undeclared properties
+export function isKeyOfConstObject<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
     return key in obj
 }
 

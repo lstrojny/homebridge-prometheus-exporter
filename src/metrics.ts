@@ -1,6 +1,6 @@
 import type { Accessory, Device, Service } from './boundaries'
 import { Services, Uuids } from './generated/services'
-import { assertTypeExhausted, isObjectKey, isType, strCamelCaseToSnakeCase } from './std'
+import { assertTypeExhausted, isKeyOfConstObject, isType, strCamelCaseToSnakeCase } from './std'
 
 type Labels = Record<string, string>
 
@@ -65,7 +65,7 @@ function extractMetrics(service: Service, timestamp: Date, labels: Labels): Metr
             case 'uint64':
                 {
                     const name = formatName(
-                        isObjectKey(service.type, Uuids) ? Uuids[service.type] : 'custom',
+                        isKeyOfConstObject(service.type, Uuids) ? Uuids[service.type] : 'custom',
                         characteristic.description,
                         characteristic.unit,
                     )
