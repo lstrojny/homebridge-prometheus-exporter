@@ -80,7 +80,7 @@ export function formatName(serviceName: string, description: string, unit: strin
             .filter(isType('string'))
             .map((v) => camelCaseToSnakeCase(v))
             // Remove duplicate prefix
-            .reduce((carry, value) => (value.startsWith(carry) ? value : carry + '_' + value))
+            .reduce((carry, value) => (value.startsWith(carry) ? value : `${carry}_${value}`))
     )
 }
 
