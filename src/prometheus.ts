@@ -45,9 +45,13 @@ function headers(contentType: string, headers: Record<string, string> = {}): Rec
 
 export class PrometheusServer implements HttpServer {
     private metricsInitialized = false
-    private metrics: Metric[] = []
+    private metricsResponse = ''
 
-    constructor(public readonly config: HttpConfig, public readonly log: Logger | undefined = undefined) {}
+    constructor(
+        public readonly config: HttpConfig,
+        public readonly log: Logger | undefined = undefined,
+        private readonly renderer: MetricsRenderer = new MetricsRenderer(config.prefix),
+    ) {}
 
     onRequest(): HttpResponse | undefined {
         if (!this.metricsInitialized) {
@@ -60,13 +64,10 @@ export class PrometheusServer implements HttpServer {
     }
 
     onMetrics(): HttpResponse {
-        const renderer = new MetricsRenderer(this.config.prefix)
-        const metrics = this.metrics.map((metric) => renderer.render(metric)).join('\n')
-
         return {
             statusCode: 200,
             headers: headers(metricsContentType),
-            body: metrics,
+            body: this.metricsResponse,
         }
     }
 
@@ -87,7 +88,7 @@ export class PrometheusServer implements HttpServer {
     }
 
     updateMetrics(metrics: Metric[]): void {
-        this.metrics = metrics
+        this.metricsResponse = metrics.map((metric) => this.renderer.render(metric)).join('\n')
         this.metricsInitialized = true
     }
 }
