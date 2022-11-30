@@ -58,7 +58,7 @@
     },
     "dependencies": {
         "@fastify/auth": "^4.1.0",
-        "@fastify/basic-auth": "^4.0.0",
+        "@fastify/basic-auth": "^5.0.0",
         "bcrypt": "^5.1.0",
         "fastify": "^4.9.2",
         "hap-node-client": "^0.1.25",
