@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { parseSchema } = require('json-schema-to-zod-with-defaults')
+const { parseSchema } = require('json-schema-to-zod')
 const { schema } = require('../config.schema.json')
 const { format } = require('prettier')
 const { join, basename } = require('path')
@@ -11,7 +11,7 @@ const file = join(__dirname, '../src/generated/config_boundary.ts')
 
 console.log(`Starting code generation for ${file}`)
 
-const zodSchema = parseSchema(schema, true)
+const zodSchema = parseSchema(schema, false)
 
 const code = format(
     `
