@@ -5,13 +5,18 @@ import { hapNodeJsClientDiscover as discover } from './adapters/discovery'
 import { type HttpServerController, fastifyServe as serve } from './adapters/http'
 import { PrometheusServer } from './prometheus'
 import { type Config, ConfigBoundary, checkBoundary } from './boundaries'
+import type { DeepReadonly } from './std'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer
     private httpServerController: HttpServerController | null = null
     private readonly config: Config
 
-    constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
+    public constructor(
+        public readonly log: Readonly<Logger>,
+        config: DeepReadonly<PlatformConfig>,
+        public readonly api: Readonly<Pick<API, 'on'>>,
+    ) {
         this.log.debug('Initializing platform %s', config.platform)
 
         this.config = checkBoundary(ConfigBoundary, config)
@@ -29,7 +34,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.httpServer = new PrometheusServer(this.config, this.log)
         serve(this.httpServer)
-            .then((httpServerController) => {
+            .then((httpServerController: HttpServerController) => {
                 this.log.debug('HTTP server started on port %d', this.config.port)
                 this.httpServerController = httpServerController
             })

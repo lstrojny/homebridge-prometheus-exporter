@@ -3,30 +3,29 @@ import type { RequestListener, Server } from 'http'
 import type { Config } from '../../boundaries'
 import type { Metric } from '../../metrics'
 
-export interface HttpResponse {
+export type HttpResponse = Readonly<{
     statusCode?: number
     body?: string
-    headers?: Record<string, string>
-}
+    headers?: Readonly<Record<string, string>>
+}>
 
-export interface HttpServerController {
+export type HttpServerController = Readonly<{
     shutdown(): void
-}
+}>
 
 export type HttpAdapter = (config: HttpServer) => Promise<HttpServerController>
 
-export type HttpConfig = Pick<
-    Config,
-    'debug' | 'port' | 'interface' | 'prefix' | 'basic_auth' | 'tls_cert_file' | 'tls_key_file'
+export type HttpConfig = Readonly<
+    Pick<Config, 'debug' | 'port' | 'interface' | 'prefix' | 'basic_auth' | 'tls_cert_file' | 'tls_key_file'>
 >
 
-export interface HttpServer {
-    log: Logger | null
+export type HttpServer = Readonly<{
+    log: Readonly<Logger> | null
     config: HttpConfig
     serverFactory?: (requestListener: RequestListener) => Server
     onRequest(): HttpResponse | null
     onMetrics(): HttpResponse
     onNotFound(): HttpResponse
-    onError(error: Error): HttpResponse
-    onMetricsDiscovery(metrics: Metric[]): void
-}
+    onError(error: Readonly<Error>): HttpResponse
+    onMetricsDiscovery(metrics: ReadonlyArray<Metric>): void
+}>

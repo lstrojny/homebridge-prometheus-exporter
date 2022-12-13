@@ -13,7 +13,10 @@ function createTestServer(): { http: Server; prometheus: HttpServer } {
     return createTestServerWithBasicAuth({})
 }
 
-function createTestServerWithBasicAuth(basicAuth: Record<string, string>): { http: Server; prometheus: HttpServer } {
+function createTestServerWithBasicAuth(basicAuth: Readonly<Record<string, string>>): {
+    http: Server
+    prometheus: HttpServer
+} {
     const http = createServer()
     const prometheus = new TestablePrometheusServer({
         port: 0,
@@ -23,7 +26,7 @@ function createTestServerWithBasicAuth(basicAuth: Record<string, string>): { htt
         basic_auth: basicAuth,
     })
     prometheus.serverFactory = (handler) => http.on('request', handler)
-    fastifyServe(prometheus).catch((err: Error) => {
+    fastifyServe(prometheus).catch((err: Readonly<Error>) => {
         if (!('code' in err) || (err as unknown as { code: unknown }).code !== 'ERR_SERVER_ALREADY_LISTEN') {
             console.debug(err)
         }

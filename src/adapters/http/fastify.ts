@@ -1,10 +1,20 @@
-import Fastify, { type FastifyReply, type FastifyRequest, type HookHandlerDoneFunction } from 'fastify'
+import Fastify, {
+    type FastifyError as FastifyErrorMutable,
+    type FastifyReply as FastifyReplyMutable,
+    type FastifyRequest as FastifyRequestMutable,
+    type HookHandlerDoneFunction,
+} from 'fastify'
 import { readFileSync } from 'fs'
 import { constants as HttpConstants } from 'http2'
 import { isAuthenticated } from '../../security'
+import type { DeepReadonly } from '../../std'
 import type { HttpAdapter, HttpResponse, HttpServer } from './api'
 import fastifyAuth from '@fastify/auth'
 import fastifyBasicAuth from '@fastify/basic-auth'
+
+type FastifyRequest = DeepReadonly<FastifyRequestMutable>
+type FastifyReply = DeepReadonly<FastifyReplyMutable>
+type FastifyError = DeepReadonly<FastifyErrorMutable>
 
 function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void {
     if (response.statusCode) {
@@ -27,7 +37,7 @@ function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string
     return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
 }
 
-type FastifyServer = ReturnType<typeof Fastify>
+type FastifyServer = DeepReadonly<ReturnType<typeof Fastify>>
 function createFastify(server: HttpServer): FastifyServer {
     const config = { logger: false }
 
@@ -86,7 +96,7 @@ export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
         next()
     })
 
-    fastify.setErrorHandler(async (error, request: FastifyRequest, reply: FastifyReply) => {
+    fastify.setErrorHandler(async (error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
         adaptResponseToReply(server.onError(error), reply)
     })
 

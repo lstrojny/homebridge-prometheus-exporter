@@ -6,14 +6,14 @@ import z from 'zod'
 
 const MaybeDevices = z.array(z.unknown())
 
-type ResolveFunc = (devices: Device[]) => void
+type ResolveFunc = (devices: ReadonlyArray<Device>) => void
 type RejectFunc = (error: unknown) => void
 
 const clientMap: Record<string, HAPNodeJSClient> = {}
 const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
 function startDiscovery(
-    logger: Logger | undefined,
+    logger: Readonly<Logger> | undefined,
     config: HAPNodeJSClientConfig,
     resolve: ResolveFunc,
     reject: RejectFunc,
@@ -31,7 +31,7 @@ function startDiscovery(
     }
 }
 
-function createDiscoveryHandler(logger: Logger | undefined, key: string): (deviceData: unknown) => void {
+function createDiscoveryHandler(logger: Readonly<Logger> | undefined, key: string): (deviceData: unknown) => void {
     return (deviceData: unknown) => {
         try {
             const devices: Device[] = []

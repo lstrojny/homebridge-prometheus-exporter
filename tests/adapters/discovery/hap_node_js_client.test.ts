@@ -7,7 +7,7 @@ let deviceData: unknown = null
 
 jest.mock('hap-node-client', () => ({
     HAPNodeJSClient: class {
-        on(event: string, fn: (data: unknown) => void) {
+        public on(event: string, fn: (data: unknown) => void) {
             intervals.push(setInterval(() => fn(deviceData), 100))
         }
     },
@@ -52,7 +52,7 @@ const config = {
 
 describe('HAP NodeJS Client', () => {
     afterAll(() => {
-        intervals.map((timer) => clearInterval(timer))
+        intervals.map((timer: Readonly<NodeJS.Timer>) => clearInterval(timer))
     })
 
     test('Simple discovery', async () => {
