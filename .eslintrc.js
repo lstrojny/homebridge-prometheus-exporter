@@ -19,6 +19,7 @@ module.exports = {
         'import/no-default-export': 'error',
         'import/no-namespace': 'error',
         'import/no-useless-path-segments': 'error',
+        'import/no-named-as-default': 0,
         'no-duplicate-imports': 'error',
     },
     overrides: [
