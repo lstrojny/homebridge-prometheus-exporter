@@ -5,6 +5,7 @@ interface TypeMap {
     boolean: boolean
     object: object
     symbol: symbol
+    // eslint-disable-next-line @typescript-eslint/ban-types
     undefined: undefined
 }
 

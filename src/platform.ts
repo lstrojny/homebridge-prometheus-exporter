@@ -1,11 +1,11 @@
-import type { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
+import type { IndependentPlatformPlugin } from 'homebridge'
+import type { HomebridgeApi, HomebridgeLogger, HomebridgePlatformConfig } from './adapters/homebridge/types'
 
 import { aggregate } from './metrics'
 import { hapNodeJsClientDiscover as discover } from './adapters/discovery'
 import { type HttpServerController, fastifyServe as serve } from './adapters/http'
 import { PrometheusServer } from './prometheus'
 import { type Config, ConfigBoundary, checkBoundary } from './boundaries'
-import type { DeepReadonly } from './std'
 
 export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly httpServer: PrometheusServer
@@ -13,9 +13,9 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private readonly config: Config
 
     public constructor(
-        public readonly log: Readonly<Logger>,
-        config: DeepReadonly<PlatformConfig>,
-        public readonly api: Readonly<Pick<API, 'on'>>,
+        public readonly log: HomebridgeLogger,
+        config: HomebridgePlatformConfig,
+        public readonly api: Pick<HomebridgeApi, 'on'>,
     ) {
         this.log.debug('Initializing platform %s', config.platform)
 

@@ -1,4 +1,4 @@
-import type { Logger } from 'homebridge'
+import type { HomebridgeLogger } from './adapters/homebridge/types'
 import type { HttpConfig, HttpResponse, HttpServer } from './adapters/http'
 import type { Metric } from './metrics'
 import { strTrimRight } from './std'
@@ -53,7 +53,7 @@ export class PrometheusServer implements HttpServer {
 
     public constructor(
         public readonly config: HttpConfig,
-        public readonly log: Readonly<Logger> | null = null,
+        public readonly log: HomebridgeLogger | null = null,
         private readonly renderer: Readonly<MetricsRenderer> = new MetricsRenderer(config.prefix),
     ) {}
 
