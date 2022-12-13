@@ -1,5 +1,5 @@
 {
-  description = "Ansible environment";
+  description = "homebridge-prometheus-exporter";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
