@@ -15,8 +15,9 @@ export type HttpServerController = Readonly<{
 
 export type HttpAdapter = (config: HttpServer) => Promise<HttpServerController>
 
-export type HttpConfig = Readonly<
-    Pick<Config, 'debug' | 'port' | 'interface' | 'prefix' | 'basic_auth' | 'tls_cert_file' | 'tls_key_file'>
+export type HttpConfig = Pick<
+    Config,
+    'debug' | 'port' | 'interface' | 'prefix' | 'basic_auth' | 'tls_cert_file' | 'tls_key_file'
 >
 
 export type HttpServer = Readonly<{
