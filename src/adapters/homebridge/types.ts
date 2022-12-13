@@ -1,6 +1,6 @@
 import type { API, Logger, PlatformConfig } from 'homebridge'
-import type { DeepReadonly } from '../../std'
+import type { Immutable } from '../../std'
 
-export type HomebridgePlatformConfig = DeepReadonly<PlatformConfig>
-export type HomebridgeLogger = Readonly<Logger>
-export type HomebridgeApi = DeepReadonly<API>
+export type HomebridgePlatformConfig = Immutable<PlatformConfig>
+export type HomebridgeLogger = Immutable<Logger>
+export type HomebridgeApi = Immutable<API>

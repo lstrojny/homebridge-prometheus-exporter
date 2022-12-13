@@ -7,14 +7,14 @@ import Fastify, {
 import { readFileSync } from 'fs'
 import { constants as HttpConstants } from 'http2'
 import { isAuthenticated } from '../../security'
-import type { DeepReadonly } from '../../std'
+import type { Immutable } from '../../std'
 import type { HttpAdapter, HttpResponse, HttpServer } from './api'
 import fastifyAuth from '@fastify/auth'
 import fastifyBasicAuth from '@fastify/basic-auth'
 
-type FastifyRequest = DeepReadonly<FastifyRequestMutable>
-type FastifyReply = DeepReadonly<FastifyReplyMutable>
-type FastifyError = DeepReadonly<FastifyErrorMutable>
+type FastifyRequest = Immutable<FastifyRequestMutable>
+type FastifyReply = Immutable<FastifyReplyMutable>
+type FastifyError = Immutable<FastifyErrorMutable>
 
 function adaptResponseToReply(response: HttpResponse, reply: FastifyReply): void {
     if (response.statusCode) {
@@ -37,7 +37,7 @@ function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string
     return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
 }
 
-type FastifyServer = DeepReadonly<ReturnType<typeof Fastify>>
+type FastifyServer = Immutable<ReturnType<typeof Fastify>>
 function createFastify(server: HttpServer): FastifyServer {
     const config = { logger: false }
 

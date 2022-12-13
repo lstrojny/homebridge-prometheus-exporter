@@ -1,3 +1,4 @@
+import type { Immutable } from '../../std'
 import type { HomebridgeLogger } from '../homebridge/types'
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient, type HAPNodeJSClientConfig } from 'hap-node-client'
@@ -6,7 +7,7 @@ import z from 'zod'
 
 const MaybeDevices = z.array(z.unknown())
 
-type ResolveFunc = (devices: ReadonlyArray<Device>) => void
+type ResolveFunc = (devices: Immutable<Device[]>) => void
 type RejectFunc = (error: unknown) => void
 
 const clientMap: Record<string, HAPNodeJSClient> = {}

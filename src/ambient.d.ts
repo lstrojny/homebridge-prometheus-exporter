@@ -1,4 +1,5 @@
 declare module 'hap-node-client' {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     type HAPNodeJSClientConfig = Readonly<{
         debug?: boolean
         refresh?: number

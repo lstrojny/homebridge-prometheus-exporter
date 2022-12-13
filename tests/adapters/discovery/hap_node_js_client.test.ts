@@ -1,5 +1,6 @@
 import { afterAll, describe, expect, jest, test } from '@jest/globals'
 import { hapNodeJsClientDiscover as discover } from '../../../src/adapters/discovery/hap_node_js_client'
+import type { Immutable } from '../../../src/std'
 
 const intervals: NodeJS.Timer[] = []
 
@@ -52,7 +53,7 @@ const config = {
 
 describe('HAP NodeJS Client', () => {
     afterAll(() => {
-        intervals.map((timer: Readonly<NodeJS.Timer>) => clearInterval(timer))
+        intervals.map((timer: Immutable<NodeJS.Timer>) => clearInterval(timer))
     })
 
     test('Simple discovery', async () => {

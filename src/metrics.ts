@@ -1,14 +1,22 @@
 import type { Accessory, Device, Service } from './boundaries'
 import { Services, Uuids } from './generated/services'
-import { type Writable, assertTypeExhausted, isKeyOfConstObject, isType, strCamelCaseToSnakeCase } from './std'
+import {
+    type Immutable,
+    type ImmutableDate,
+    type Mutable,
+    assertTypeExhausted,
+    isKeyOfConstObject,
+    isType,
+    strCamelCaseToSnakeCase,
+} from './std'
 
-type Labels = Readonly<Record<string, string>>
+type Labels = Immutable<Record<string, string>>
 
 export class Metric {
     public constructor(
         public readonly name: string,
         public readonly value: number,
-        public readonly timestamp: Readonly<Date> | null = null,
+        public readonly timestamp: ImmutableDate | null = null,
         public readonly labels: Labels = {},
     ) {}
 }
@@ -18,7 +26,7 @@ export class Metric {
  */
 const METRICS_FILTER = ['Identifier']
 
-export function aggregate(devices: ReadonlyArray<Device>, timestamp: Readonly<Date>): Metric[] {
+export function aggregate(devices: Immutable<Device[]>, timestamp: ImmutableDate): Metric[] {
     const metrics: Metric[][] = []
 
     for (const device of devices) {
@@ -37,7 +45,7 @@ export function aggregate(devices: ReadonlyArray<Device>, timestamp: Readonly<Da
     return metrics.flat()
 }
 
-function extractMetrics(service: Service, timestamp: Readonly<Date>, labels: Labels): Metric[] {
+function extractMetrics(service: Service, timestamp: ImmutableDate, labels: Labels): Metric[] {
     const metrics: Metric[] = []
 
     for (const characteristic of service.characteristics) {
@@ -109,7 +117,7 @@ function getAccessoryLabels(accessory: Accessory): Labels {
 }
 
 function getServiceLabels(service: Service): Labels {
-    const labels: Writable<Labels> = {}
+    const labels: Mutable<Labels> = {}
 
     for (const characteristic of service.characteristics) {
         if (

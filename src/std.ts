@@ -41,21 +41,25 @@ export function strTrimRight(str: string, char: string): string {
     return strReverse(strReverse(str).replace(new RegExp(`^[${char}]+`), ''))
 }
 
-export type DeepReadonly<T> = T extends (infer R)[]
-    ? DeepReadonlyArray<R>
+export type Immutable<T> = T extends (infer R)[]
+    ? ImmutableArray<R>
     : // eslint-disable-next-line @typescript-eslint/ban-types
     T extends Function
     ? T
     : T extends object
-    ? DeepReadonlyObject<T>
+    ? ImmutableObject<T>
     : T
 
-export type DeepReadonlyArray<T> = ReadonlyArray<DeepReadonly<T>>
+// eslint-disable-next-line @typescript-eslint/ban-types
+type ImmutableArray<T> = ReadonlyArray<Immutable<T>>
 
-type DeepReadonlyObject<T> = {
-    readonly [P in keyof T]: DeepReadonly<T[P]>
+type ImmutableObject<T> = {
+    readonly [P in keyof T]: Immutable<T[P]>
 }
 
-export type Writable<T> = {
+export type Mutable<T> = {
     -readonly [P in keyof T]: T[P]
 }
+
+export type ImmutableDate = Immutable<Date>
+export type ImmutableError = Immutable<Error>

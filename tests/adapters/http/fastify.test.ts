@@ -4,6 +4,7 @@ import { PrometheusServer } from '../../../src/prometheus'
 import { type HttpServer, fastifyServe } from '../../../src/adapters/http'
 import { type Server, createServer } from 'http'
 import { Metric } from '../../../src/metrics'
+import type { Immutable, ImmutableError } from '../../../src/std'
 
 class TestablePrometheusServer extends PrometheusServer {
     public serverFactory: HttpServer['serverFactory']
@@ -13,7 +14,7 @@ function createTestServer(): { http: Server; prometheus: HttpServer } {
     return createTestServerWithBasicAuth({})
 }
 
-function createTestServerWithBasicAuth(basicAuth: Readonly<Record<string, string>>): {
+function createTestServerWithBasicAuth(basicAuth: Immutable<Record<string, string>>): {
     http: Server
     prometheus: HttpServer
 } {
@@ -26,7 +27,7 @@ function createTestServerWithBasicAuth(basicAuth: Readonly<Record<string, string
         basic_auth: basicAuth,
     })
     prometheus.serverFactory = (handler) => http.on('request', handler)
-    fastifyServe(prometheus).catch((err: Readonly<Error>) => {
+    fastifyServe(prometheus).catch((err: ImmutableError) => {
         if (!('code' in err) || (err as unknown as { code: unknown }).code !== 'ERR_SERVER_ALREADY_LISTEN') {
             console.debug(err)
         }

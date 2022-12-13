@@ -1,12 +1,12 @@
 import type z from 'zod'
-import type { DeepReadonly, Writable } from '../std'
+import type { Immutable, Mutable } from '../std'
 
-type Path = ReadonlyArray<string | number>
+type Path = Immutable<(string | number)[]>
 
-type ResolvedPath = Readonly<{ resolvedValue: string; resolvedPath: Path }>
+type ResolvedPath = Immutable<{ resolvedValue: string; resolvedPath: Path }>
 
 function resolvePath(data: unknown, path: Path): ResolvedPath {
-    const resolvedPath: Writable<Path> = []
+    const resolvedPath: Mutable<Path> = []
     for (const element of path) {
         try {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -40,9 +40,9 @@ export function checkBoundary<Output, T extends z.ZodType<Output>>(type: T, data
     const message =
         'Error checking type. Details: ' +
         result.error.issues
-            .map((issue: DeepReadonly<z.ZodIssue>) => ({ ...issue, ...resolvePath(data, issue.path) }))
+            .map((issue: Immutable<z.ZodIssue>) => ({ ...issue, ...resolvePath(data, issue.path) }))
             .map(
-                (issue: DeepReadonly<z.ZodIssue> & ResolvedPath) =>
+                (issue: Immutable<z.ZodIssue> & ResolvedPath) =>
                     `[${issue.code}] ${issue.message}${
                         issue.path.length > 0 ? ` at path "${formatPath(issue.path)}"` : ''
                     } (data${
