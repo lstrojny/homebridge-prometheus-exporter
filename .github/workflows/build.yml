@@ -20,16 +20,16 @@ jobs:
     name: nodejs ${{ matrix.node-version }} (${{ matrix.lint && 'lint → ' || '' }}${{ matrix.tests && 'test → ' || '' }}build)
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.2.0
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.5.0
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v3.0.11
         env:
           cache-name: cache-node-modules
         with:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Cache eslint
         id: cache-eslint
-        uses: actions/cache@v3
+        uses: actions/cache@v3.0.11
         env:
           cache-name: cache-eslint
         with:
@@ -47,7 +47,7 @@ jobs:
 
       - name: Cache TypeScript
         id: cache-typescript
-        uses: actions/cache@v3
+        uses: actions/cache@v3.0.11
         env:
           cache-name: cache-typescript
         with:
@@ -56,7 +56,7 @@ jobs:
 
       - name: Cache prettier
         id: cache-prettier
-        uses: actions/cache@v3
+        uses: actions/cache@v3.0.11
         env:
           cache-name: cache-prettier
         with:
@@ -76,7 +76,7 @@ jobs:
         if: ${{ matrix.tests }}
 
       - name: Upload code coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: code-coverage
           path: coverage/lcov.info
