@@ -10,10 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { node-version: 10.x, lint: false, tests: false }
-          - { node-version: 11.x, lint: false, tests: false }
-          - { node-version: 12.x, lint: false, tests: false }
-          - { node-version: 13.x, lint: false, tests: false }
           - { node-version: 14.x, lint: true, tests: true }
           - { node-version: 15.x, lint: false, tests: true }
           - { node-version: 16.x, lint: true, tests: true }
