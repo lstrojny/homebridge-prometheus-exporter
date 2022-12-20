@@ -16,9 +16,10 @@
     },
     "main": "dist/src/index.js",
     "scripts": {
-        "lint": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npx tsc --noEmit && npx prettier --ignore-path=.gitignore `ifNotCi --write \"--check --cache --cache-strategy content\"` '**/**.{ts,js,json}' && npx eslint `ifNotCi --fix \"--cache --cache-strategy content\"` --ignore-path=.gitignore '**/**.{ts,js,json}'",
+        "_portable_exec": "npmPortableExec() { `npm root`/.bin/$@; }; npmPortableExec",
+        "lint": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npm run _portable_exec -- tsc --noEmit && npm run _portable_exec -- prettier --ignore-path=.gitignore `ifNotCi --write \"--check --cache --cache-strategy content\"` '**/**.{ts,js,json}' && npm run _portable_exec -- eslint `ifNotCi --fix \"--cache --cache-strategy content\"` --ignore-path=.gitignore '**/**.{ts,js,json}'",
         "start": "npm run build && npm run link && nodemon",
-        "test": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npm run code-generation && npx jest `ifNotCi --watchAll --collect-coverage`",
+        "test": "ifNotCi() { test \"$CI\" && echo \"$2\" || echo \"$1\"; }; npm run code-generation && npm run _portable_exec -- jest `ifNotCi --watchAll --collect-coverage`",
         "link": "npm install --no-save file:///$PWD/",
         "build": "rimraf ./dist .tsbuildinfo && npm run code-generation && tsc",
         "code-generation": "./code-generation/hap-gen.js && ./code-generation/config-scheme-gen.js",
