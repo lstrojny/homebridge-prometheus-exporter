@@ -56,6 +56,9 @@ function generateDocs(schema) {
                 if (definition.description) {
                     lines.push(`//\n// ${wordwrap(definition.description, 80, '\n// ')}`)
                 }
+                if (definition.default !== undefined) {
+                    lines.push(`//\n// Default: ${JSON.stringify(definition.default)}`)
+                }
 
                 lines.push(`${JSON.stringify(property)}: ${JSON.stringify('<' + definition.type + '>')}`)
 

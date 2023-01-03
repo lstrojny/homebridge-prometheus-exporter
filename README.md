@@ -133,16 +133,22 @@ Once *Prometheus* is restarted, metrics with the `homebridge_` prefix should sta
 
 
       // Debug
+      //
+      // Default: false
       "debug": "<boolean>",
 
 
       // Metrics prefix
+      //
+      // Default: "homebridge"
       "prefix": "<string>",
 
 
       // Metrics server port
       //
       // TCP port where the Prometheus metrics server listens
+      //
+      // Default: 36123
       "port": "<integer>",
 
 
@@ -151,24 +157,32 @@ Once *Prometheus* is restarted, metrics with the `homebridge_` prefix should sta
       // Interface where the Prometheus metrics server listens. Can be an IP, a
       // hostname, "0.0.0.0" for all IPv4 interfaces, "::1" for all IPv6 interfaces.
       // Default is "::" which means "any interface"
+      //
+      // Default: "::"
       "interface": "<string>",
 
 
       // Service refresh interval
       //
       // Discover new services every <interval> seconds
+      //
+      // Default: 60
       "refresh_interval": "<integer>",
 
 
       // Request timeout
       //
       // Request timeout when interacting with homebridge instances
+      //
+      // Default: 10
       "request_timeout": "<integer>",
 
 
       // Service discovery timeout
       //
       // Discovery timeout after which the current discovery is considered failed
+      //
+      // Default: 20
       "discovery_timeout": "<integer>",
 
 
