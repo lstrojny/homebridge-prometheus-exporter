@@ -1,4 +1,5 @@
-import type { API, IndependentPlatformPlugin, Logger, PlatformConfig } from 'homebridge'
+import type { IndependentPlatformPlugin } from 'homebridge'
+import type { HomebridgeApi, HomebridgeLogger, HomebridgePlatformConfig } from './adapters/homebridge/types'
 
 import { aggregate } from './metrics'
 import { hapNodeJsClientDiscover as discover } from './adapters/discovery'
@@ -11,7 +12,11 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private httpServerController: HttpServerController | null = null
     private readonly config: Config
 
-    constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
+    public constructor(
+        public readonly log: HomebridgeLogger,
+        config: HomebridgePlatformConfig,
+        public readonly api: Pick<HomebridgeApi, 'on'>,
+    ) {
         this.log.debug('Initializing platform %s', config.platform)
 
         this.config = checkBoundary(ConfigBoundary, config)
@@ -29,7 +34,7 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
 
         this.httpServer = new PrometheusServer(this.config, this.log)
         serve(this.httpServer)
-            .then((httpServerController) => {
+            .then((httpServerController: HttpServerController) => {
                 this.log.debug('HTTP server started on port %d', this.config.port)
                 this.httpServerController = httpServerController
             })

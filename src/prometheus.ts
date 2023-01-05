@@ -1,16 +1,16 @@
-import type { Logger } from 'homebridge'
+import type { HomebridgeLogger } from './adapters/homebridge/types'
 import type { HttpConfig, HttpResponse, HttpServer } from './adapters/http'
 import type { Metric } from './metrics'
-import { strTrimRight } from './std'
+import { type Immutable, type ImmutableError, strTrimRight } from './std'
 
 export class MetricsRenderer {
     private readonly prefix: string
 
-    constructor(prefix: string) {
+    public constructor(prefix: string) {
         this.prefix = strTrimRight(prefix, '_')
     }
 
-    render(metric: Metric): string {
+    public render(metric: Metric): string {
         const name = this.metricName(metric.name)
         return [
             `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
@@ -22,7 +22,10 @@ export class MetricsRenderer {
 
     private renderLabels(labels: Metric['labels']): string {
         const rendered = Object.entries(labels)
-            .map(([label, val]) => `${sanitizePrometheusMetricName(label)}="${escapeAttributeValue(val)}"`)
+            .map(
+                ([label, val]: Immutable<[string, string]>) =>
+                    `${sanitizePrometheusMetricName(label)}="${escapeAttributeValue(val)}"`,
+            )
             .join(',')
 
         return rendered !== '' ? '{' + rendered + '}' : ''
@@ -40,7 +43,7 @@ const textContentType = 'text/plain; charset=utf-8'
 const prometheusSpecVersion = '0.0.4'
 const metricsContentType = `${textContentType}; version=${prometheusSpecVersion}`
 
-function withHeaders(contentType: string, headers: Record<string, string> = {}): Record<string, string> {
+function withHeaders(contentType: string, headers: Immutable<Record<string, string>> = {}): Record<string, string> {
     return { ...headers, 'Content-Type': contentType }
 }
 
@@ -48,13 +51,13 @@ export class PrometheusServer implements HttpServer {
     private metricsDiscovered = false
     private metricsResponse = ''
 
-    constructor(
+    public constructor(
         public readonly config: HttpConfig,
-        public readonly log: Logger | null = null,
-        private readonly renderer: MetricsRenderer = new MetricsRenderer(config.prefix),
+        public readonly log: HomebridgeLogger | null = null,
+        private readonly renderer: Immutable<MetricsRenderer> = new MetricsRenderer(config.prefix),
     ) {}
 
-    onRequest(): HttpResponse | null {
+    public onRequest(): HttpResponse | null {
         if (this.metricsDiscovered) {
             return null
         }
@@ -66,7 +69,7 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    onMetrics(): HttpResponse {
+    public onMetrics(): HttpResponse {
         return {
             statusCode: 200,
             headers: withHeaders(metricsContentType),
@@ -74,7 +77,7 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    onNotFound(): HttpResponse {
+    public onNotFound(): HttpResponse {
         return {
             statusCode: 404,
             headers: withHeaders(textContentType),
@@ -82,7 +85,7 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    onError(error: Error): HttpResponse {
+    public onError(error: ImmutableError): HttpResponse {
         this.log?.error('HTTP request error: %o', error)
         return {
             headers: withHeaders(textContentType),
@@ -90,7 +93,7 @@ export class PrometheusServer implements HttpServer {
         }
     }
 
-    onMetricsDiscovery(metrics: Metric[]): void {
+    public onMetricsDiscovery(metrics: Immutable<Metric[]>): void {
         this.metricsResponse = metrics.map((metric) => this.renderer.render(metric)).join('\n')
         this.metricsDiscovered = true
     }

@@ -36,6 +36,24 @@ module.exports = {
             rules: {
                 '@typescript-eslint/explicit-module-boundary-types': 'error',
                 '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+                '@typescript-eslint/consistent-type-exports': [
+                    'error',
+                    { fixMixedExportsWithInlineTypeSpecifier: false },
+                ],
+                '@typescript-eslint/prefer-readonly': 'error',
+                '@typescript-eslint/prefer-readonly-parameter-types': 'error',
+                '@typescript-eslint/switch-exhaustiveness-check': 'error',
+                '@typescript-eslint/explicit-member-accessibility': ['error', { accessibility: 'explicit' }],
+                '@typescript-eslint/ban-types': [
+                    'error',
+                    {
+                        types: {
+                            undefined: 'Use null instead',
+                            Readonly: 'Use Immutable<T> instead',
+                            ReadonlyArray: 'Use Immutable<T[]> instead',
+                        },
+                    },
+                ],
             },
             settings: {
                 'import/resolver': {

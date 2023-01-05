@@ -1,9 +1,10 @@
 import type { Config, Device } from '../../boundaries'
-import type { Logger } from 'homebridge'
+import type { Immutable } from '../../std'
+import type { HomebridgeLogger } from '../homebridge/types'
 
-export interface HapDiscoveryConfig {
+export type HapDiscoveryConfig = Immutable<{
     config: Pick<Config, 'debug' | 'pin' | 'refresh_interval' | 'discovery_timeout' | 'request_timeout'>
-    log?: Logger
-}
+    log?: HomebridgeLogger
+}>
 
-export type HapDiscover = (config: HapDiscoveryConfig) => Promise<Device[]>
+export type HapDiscover = (config: HapDiscoveryConfig) => Promise<Immutable<Device[]>>

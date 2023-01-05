@@ -1,19 +1,20 @@
+import type { Immutable } from '../../std'
+import type { HomebridgeLogger } from '../homebridge/types'
 import type { HapDiscover } from './api'
 import { HAPNodeJSClient, type HAPNodeJSClientConfig } from 'hap-node-client'
 import { type Device, DeviceBoundary, checkBoundary } from '../../boundaries'
-import type { Logger } from 'homebridge'
 import z from 'zod'
 
 const MaybeDevices = z.array(z.unknown())
 
-type ResolveFunc = (devices: Device[]) => void
+type ResolveFunc = (devices: Immutable<Device[]>) => void
 type RejectFunc = (error: unknown) => void
 
 const clientMap: Record<string, HAPNodeJSClient> = {}
 const promiseMap: Record<string, [ResolveFunc, RejectFunc]> = {}
 
 function startDiscovery(
-    logger: Logger | undefined,
+    logger: HomebridgeLogger | null,
     config: HAPNodeJSClientConfig,
     resolve: ResolveFunc,
     reject: RejectFunc,
@@ -31,7 +32,7 @@ function startDiscovery(
     }
 }
 
-function createDiscoveryHandler(logger: Logger | undefined, key: string): (deviceData: unknown) => void {
+function createDiscoveryHandler(logger: HomebridgeLogger | null, key: string): (deviceData: unknown) => void {
     return (deviceData: unknown) => {
         try {
             const devices: Device[] = []
@@ -51,7 +52,7 @@ function createDiscoveryHandler(logger: Logger | undefined, key: string): (devic
     }
 }
 
-export const hapNodeJsClientDiscover: HapDiscover = ({ config, log }) => {
+export const hapNodeJsClientDiscover: HapDiscover = ({ config, log = null }) => {
     return new Promise((resolve, reject) => {
         startDiscovery(
             log,

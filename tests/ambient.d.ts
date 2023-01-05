@@ -1,6 +1,7 @@
 import type { SuperTest, Test } from 'supertest'
 import type { Server } from 'http'
+import type { Immutable } from '../src/std'
 
 declare module 'supertest' {
-    function supertest(app: Server): SuperTest<Test>
+    function supertest(app: Immutable<Server>): SuperTest<Test>
 }

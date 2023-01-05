@@ -1,16 +1,17 @@
 declare module 'hap-node-client' {
-    type HAPNodeJSClientConfig = {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    type HAPNodeJSClientConfig = Readonly<{
         debug?: boolean
         refresh?: number
         timeout?: number
         reqTimeout?: number
         pin?: string
-    }
+    }>
 
     class HAPNodeJSClient {
-        constructor(config: HAPNodeJSClientConfig)
+        public constructor(config: HAPNodeJSClientConfig)
 
-        on(event: 'Ready', callback: (v: unknown) => void): void
+        public on(event: 'Ready', callback: (v: unknown) => void): void
     }
 }
 

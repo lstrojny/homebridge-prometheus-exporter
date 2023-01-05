@@ -5,6 +5,7 @@ interface TypeMap {
     boolean: boolean
     object: object
     symbol: symbol
+    // eslint-disable-next-line @typescript-eslint/ban-types
     undefined: undefined
 }
 
@@ -39,3 +40,26 @@ export function strReverse(str: string): string {
 export function strTrimRight(str: string, char: string): string {
     return strReverse(strReverse(str).replace(new RegExp(`^[${char}]+`), ''))
 }
+
+export type Immutable<T> = T extends (infer R)[]
+    ? ImmutableArray<R>
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends Function
+    ? T
+    : T extends object
+    ? ImmutableObject<T>
+    : T
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+type ImmutableArray<T> = ReadonlyArray<Immutable<T>>
+
+type ImmutableObject<T> = {
+    readonly [P in keyof T]: Immutable<T[P]>
+}
+
+export type Mutable<T> = {
+    -readonly [P in keyof T]: T[P]
+}
+
+export type ImmutableDate = Immutable<Date>
+export type ImmutableError = Immutable<Error>
