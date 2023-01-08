@@ -18,3 +18,12 @@ declare module 'hap-node-client' {
 declare module '@homebridge/dbus-native' {
     type InvokeError = unknown
 }
+
+declare module 'array.prototype.group' {
+    function shim(): void
+}
+
+interface Array<T> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    group<U>(fn: (value: T, index: number, array: T[]) => U, thisArg?: any): { U: T[] }
+}

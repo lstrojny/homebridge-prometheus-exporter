@@ -2,6 +2,8 @@ import type { Logger } from 'homebridge'
 import type { HttpConfig, HttpResponse, HttpServer } from './adapters/http'
 import type { Metric } from './metrics'
 import { strTrimRight } from './std'
+import { shim } from 'array.prototype.group'
+shim()
 
 export class MetricsRenderer {
     private readonly prefix: string
@@ -10,17 +12,24 @@ export class MetricsRenderer {
         this.prefix = strTrimRight(prefix, '_')
     }
 
-    render(metric: Metric): string {
-        const name = this.metricName(metric.name)
-        return [
-            `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
-            `${name}${this.renderLabels(metric.labels)} ${metric.value}${
-                metric.timestamp !== null ? ' ' + String(metric.timestamp.getTime()) : ''
-            }`,
-        ].join('\n')
+    render(metrics: Metric[]): string {
+        return Object.entries(metrics.sort().group((metric) => this.metricName(metric.name)))
+            .map(([name, metrics]) => {
+                return [
+                    `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
+                    metrics.map((metric) => this.formatMetric(metric)).join('\n'),
+                ].join('\n')
+            })
+            .join('\n\n')
     }
 
-    private renderLabels(labels: Metric['labels']): string {
+    private formatMetric(metric: Metric): string {
+        return `${this.metricName(metric.name)}${MetricsRenderer.renderLabels(metric.labels)} ${metric.value}${
+            metric.timestamp !== null ? ' ' + String(metric.timestamp.getTime()) : ''
+        }`
+    }
+
+    private static renderLabels(labels: Metric['labels']): string {
         const rendered = Object.entries(labels)
             .map(([label, val]) => `${sanitizePrometheusMetricName(label)}="${escapeAttributeValue(val)}"`)
             .join(',')
@@ -91,7 +100,7 @@ export class PrometheusServer implements HttpServer {
     }
 
     onMetricsDiscovery(metrics: Metric[]): void {
-        this.metricsResponse = metrics.map((metric) => this.renderer.render(metric)).join('\n')
+        this.metricsResponse = this.renderer.render(metrics)
         this.metricsDiscovered = true
     }
 }

@@ -71,6 +71,7 @@ describe('Fastify HTTP adapter', () => {
                 [
                     '# TYPE homebridge_metric gauge',
                     'homebridge_metric{name="metric"} 0.1 1577836800000',
+                    '',
                     '# TYPE homebridge_something_total counter',
                     'homebridge_something_total{name="counter"} 100 1577836800000',
                 ].join('\n'),
@@ -117,6 +118,7 @@ describe('Fastify HTTP adapter', () => {
                 [
                     '# TYPE homebridge_metric gauge',
                     'homebridge_metric{name="metric"} 0.1 1577836800000',
+                    '',
                     '# TYPE homebridge_something_total counter',
                     'homebridge_something_total{name="counter"} 100 1577836800000',
                 ].join('\n'),
