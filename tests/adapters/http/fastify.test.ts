@@ -74,6 +74,7 @@ describe('Fastify HTTP adapter', () => {
                     '',
                     '# TYPE homebridge_something_total counter',
                     'homebridge_something_total{name="counter"} 100 1577836800000',
+                    '',
                 ].join('\n'),
             )
     })
@@ -121,6 +122,7 @@ describe('Fastify HTTP adapter', () => {
                     '',
                     '# TYPE homebridge_something_total counter',
                     'homebridge_something_total{name="counter"} 100 1577836800000',
+                    '',
                 ].join('\n'),
             )
     })

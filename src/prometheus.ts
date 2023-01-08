@@ -13,14 +13,16 @@ export class MetricsRenderer {
     }
 
     render(metrics: Metric[]): string {
-        return Object.entries(metrics.sort().group((metric) => this.metricName(metric.name)))
-            .map(([name, metrics]) => {
-                return [
-                    `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
-                    metrics.map((metric) => this.formatMetric(metric)).join('\n'),
-                ].join('\n')
-            })
-            .join('\n\n')
+        return (
+            Object.entries(metrics.sort().group((metric) => this.metricName(metric.name)))
+                .map(([name, metrics]) => {
+                    return [
+                        `# TYPE ${name} ${name.endsWith('_total') ? 'counter' : 'gauge'}`,
+                        metrics.map((metric) => this.formatMetric(metric)).join('\n'),
+                    ].join('\n')
+                })
+                .join('\n\n') + '\n'
+        )
     }
 
     private formatMetric(metric: Metric): string {
