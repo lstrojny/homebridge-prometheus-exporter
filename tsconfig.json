@@ -10,7 +10,7 @@
         "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
-        "importsNotUsedAsValues": "error",
+        "verbatimModuleSyntax": true,
         "noImplicitAny": true,
         "resolveJsonModule": true,
         "tsBuildInfoFile": ".tsbuildinfo",
