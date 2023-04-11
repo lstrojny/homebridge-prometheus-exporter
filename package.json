@@ -52,7 +52,7 @@
         "nodemon": "^2.0.13",
         "prettier": "^2.7.1",
         "release-it": "^15.5.0",
-        "rimraf": "^4.0.1",
+        "rimraf": "^5.0.0",
         "supertest": "^6.3.1",
         "ts-jest": "^29.0.3",
         "ts-node": "^10.3.0",
