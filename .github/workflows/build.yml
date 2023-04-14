@@ -20,7 +20,7 @@ jobs:
     name: nodejs ${{ matrix.node-version }} (${{ matrix.lint && 'lint → ' || '' }}${{ matrix.tests && 'test → ' || '' }}build)
 
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3.6.0
