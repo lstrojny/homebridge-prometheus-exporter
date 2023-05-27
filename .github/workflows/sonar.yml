@@ -1,4 +1,4 @@
-name: Sonar
+name: Sonar scan
 
 on:
   workflow_run:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   sonar:
-    name: Sonar
+    name: Sonar scan on "${{ github.event.workflow_run.head_branch }}"
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
 
