@@ -164,9 +164,9 @@ describe('Metrics aggregator', () => {
             name: 'Phoscon-GW',
         }
 
-        const unknowmnUuid = DeviceBoundary.parse(unknownUuidData)
+        const unknownUuid = DeviceBoundary.parse(unknownUuidData)
 
-        expect(aggregate([unknowmnUuid], timestamp)).toEqual([
+        expect(aggregate([unknownUuid], timestamp)).toEqual([
             new Metric('custom_heartrate_seconds', 5, timestamp, expectedLabels),
             new Metric('custom_transition_time_seconds', 0.4, timestamp, expectedLabels),
             new Metric('custom_restart', 0, timestamp, expectedLabels),
@@ -174,8 +174,8 @@ describe('Metrics aggregator', () => {
     })
 
     test('Aggregates metrics with nullable values', () => {
-        const unknowmnValue = DeviceBoundary.parse(nullableValueData)
+        const unknownValue = DeviceBoundary.parse(nullableValueData)
 
-        expect(aggregate([unknowmnValue], timestamp)).toEqual([])
+        expect(aggregate([unknownValue], timestamp)).toEqual([])
     })
 })
