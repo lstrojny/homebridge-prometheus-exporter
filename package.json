@@ -48,7 +48,7 @@
         "homebridge": "^1.3.5",
         "homebridge-cmdswitch2": "^0.2.10",
         "jest": "^29.3.0",
-        "json-schema-to-zod": "^0.6.0",
+        "json-schema-to-zod": "^1.1.0",
         "nodemon": "^3.0.1",
         "prettier": "^2.7.1",
         "release-it": "^16.0.0",
