@@ -1,4 +1,9 @@
-import Fastify, { type FastifyReply, type FastifyRequest, type HookHandlerDoneFunction } from 'fastify'
+import Fastify, {
+    type FastifyInstance,
+    type FastifyReply,
+    type FastifyRequest,
+    type HookHandlerDoneFunction,
+} from 'fastify'
 import { readFileSync } from 'fs'
 import { constants as HttpConstants } from 'http2'
 import { isAuthenticated } from '../../security'
@@ -27,8 +32,7 @@ function formatCombinedLog(request: FastifyRequest, reply: FastifyReply): string
     return `${remoteAddress} - "${request.method} ${request.url} HTTP/${request.raw.httpVersion}" ${reply.statusCode} "${request.protocol}://${request.hostname}" "${userAgent}" "${contentType}"`
 }
 
-type FastifyServer = ReturnType<typeof Fastify>
-function createFastify(server: HttpServer): FastifyServer {
+function createFastify(server: HttpServer): FastifyInstance {
     const config = { logger: false }
 
     if (server.config.tls_cert_file && server.config.tls_key_file) {
@@ -107,7 +111,7 @@ export const fastifyServe: HttpAdapter = async (server: HttpServer) => {
     }
 }
 
-async function listen(fastify: FastifyServer, port: number, host: string): Promise<void> {
+async function listen(fastify: FastifyInstance, port: number, host: string): Promise<void> {
     try {
         await fastify.listen({ port, host })
     } catch (e: unknown) {

@@ -11,7 +11,11 @@ export class PrometheusExporterPlatform implements IndependentPlatformPlugin {
     private httpServerController: HttpServerController | null = null
     private readonly config: Config
 
-    constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
+    constructor(
+        public readonly log: Logger,
+        config: PlatformConfig,
+        public readonly api: API,
+    ) {
         this.log.debug('Initializing platform %s', config.platform)
 
         this.config = checkBoundary(ConfigBoundary, config)
