@@ -43,7 +43,7 @@
         "eslint": "^8.0.1",
         "eslint-import-resolver-typescript": "^3.5.2",
         "eslint-plugin-import": "^2.26.0",
-        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-prettier": "^5.0.1",
         "hap-nodejs": "^0.11.0",
         "homebridge": "^1.3.5",
         "homebridge-cmdswitch2": "^0.2.10",
