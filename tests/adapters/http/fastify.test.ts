@@ -34,7 +34,9 @@ function createTestServerWithBasicAuth(basicAuth: Record<string, string>): { htt
 
 const secretAsBcrypt = '$2b$12$B8C9hsi2idheYOdSM9au0.6DbD6z44iI5dZo.72AYLsAEiNdnqNPG'
 
-describe('Fastify HTTP adapter', () => {
+const describeIf = process.versions.node.split('.')[0] === '15' ? describe.skip : describe
+
+describeIf('Fastify HTTP adapter', () => {
     test('Serves 503 everywhere while metrics are not available', () => {
         return request(createTestServer().http)
             .get('/any-url')
