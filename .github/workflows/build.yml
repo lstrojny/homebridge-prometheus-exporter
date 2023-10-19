@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { node-version: 14.x, lint: true, tests: true }
+          - { node-version: 14.x, lint: false, tests: true }
           - { node-version: 16.x, lint: true, tests: true }
           - { node-version: 17.x, lint: true, tests: true }
           - { node-version: 18.x, lint: true, tests: true }
