@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, jest, test } from '@jest/globals'
 import { hapNodeJsClientDiscover as discover } from '../../../src/adapters/discovery/hap_node_js_client'
 
-const intervals: NodeJS.Timer[] = []
+const intervals: NodeJS.Timeout[] = []
 
 let deviceData: unknown = null
 
