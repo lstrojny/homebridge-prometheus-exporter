@@ -30,7 +30,7 @@ jobs:
 
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v3.3.3
         env:
           cache-name: cache-node-modules
         with:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Cache eslint
         id: cache-eslint
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v3.3.3
         env:
           cache-name: cache-eslint
         with:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Cache TypeScript
         id: cache-typescript
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v3.3.3
         env:
           cache-name: cache-typescript
         with:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Cache prettier
         id: cache-prettier
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v3.3.3
         env:
           cache-name: cache-prettier
         with:
