@@ -6,4 +6,12 @@ module.exports = {
     trailingComma: 'all',
     quoteProps: 'as-needed',
     proseWrap: 'always',
+    overrides: [
+        {
+            files: ['tsconfig.json'],
+            options: {
+                parser: 'jsonc',
+            },
+        },
+    ],
 }
