@@ -14,8 +14,8 @@
         "noImplicitAny": true,
         "resolveJsonModule": true,
         "tsBuildInfoFile": ".tsbuildinfo",
-        "incremental": true,
+        "incremental": true
     },
     "include": ["src/", "tests/"],
-    "exclude": [],
+    "exclude": []
 }
