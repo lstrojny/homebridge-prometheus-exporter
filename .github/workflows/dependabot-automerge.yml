@@ -16,7 +16,7 @@ jobs:
         && startsWith(github.event.workflow_run.head_branch, 'dependabot/')
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
