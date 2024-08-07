@@ -77,7 +77,7 @@ jobs:
         if: ${{ matrix.tests }}
 
       - name: Upload code coverage
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v4.3.6
         with:
           name: code-coverage
           path: coverage/lcov.info
