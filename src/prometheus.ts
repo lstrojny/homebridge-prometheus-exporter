@@ -25,11 +25,9 @@ export class MetricsRenderer {
         )
     }
 
-    private formatMetric(metric: Metric): string {
-        return `${this.metricName(metric.name)}${MetricsRenderer.renderLabels(metric.labels)} ${metric.value}${
-            metric.timestamp !== null ? ' ' + String(metric.timestamp.getTime()) : ''
-        }`
-    }
+private formatMetric(metric: Metric): string {
+    return `${this.metricName(metric.name)}${MetricsRenderer.renderLabels(metric.labels)} ${metric.value}`
+}
 
     private static renderLabels(labels: Metric['labels']): string {
         const rendered = Object.entries(labels)
@@ -71,11 +69,10 @@ export class PrometheusServer implements HttpServer {
         }
 
         return {
-            statusCode: 503,
-            headers: withHeaders(textContentType, { 'Retry-After': String(retryAfterWhileDiscovery) }),
-            body: 'Metrics discovery pending',
-        }
-    }
+    statusCode: 200,
+    headers: withHeaders(textContentType, {}),
+    body: '',
+}
 
     onMetrics(): HttpResponse {
         return {
